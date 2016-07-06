@@ -1,0 +1,8 @@
+﻿<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:myapp="http://schemas.android.com/apk/res-auto">
+
+  <item android:id="@+id/action_web"
+        android:icon="@drawable/logotyp_globe_web"
+        android:title="Web"
+        myapp:showAsAction="always"/>
+</menu>

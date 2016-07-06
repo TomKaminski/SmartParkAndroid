@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">SmartParkAndroid</string>
+  
+  <string name="ApplicationName">SmartPARK</string>
+
+  <string-array name="not_logged_in_menu_string">
+    <item>Home</item>
+    <item>O aplikacji</item>
+  </string-array>
+
+  <string-array name="logged_in_menu_string">
+    <item>Home</item>
+    <item>O aplikacji</item>
+  </string-array>
+
+  <string name="about_header">smartPARK. Innowacja i wygoda.</string>
+    
+  <string name="about_desc_first">
+    system został stworzony przez studenta Informatyki na Wydziale Budowy Maszyn i Informatyki jako projekt pracy inżynierskiej. Zadaniem systemu jest ułatwienie studentom płatności za wjazd na parking uczelni oraz wyjazd.
+  </string>
+
+  <string name="about_desc_second">
+    Na smartPARK składają się trzy elementy: infokiosk, w którym możliwe jest wykupienie abonamentu na wyjazdy oraz płatność kartą, aplikacja mobilna, która służy do łatwego, wygodnego i szybkiego otwierania szlabanu oraz serce całego systemu - Portal
+  </string>
+  
 </resources>
