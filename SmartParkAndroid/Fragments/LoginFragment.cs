@@ -1,7 +1,9 @@
+using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
+using SmartParkAndroid.Core;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 
@@ -24,15 +26,35 @@ namespace SmartParkAndroid.Fragments
             var passwordWrapper = view.FindViewById<EditText>(Resource.Id.txtPassword);
             var txtPassword = passwordWrapper.Text;
 
-            //btnLogin.Click += (o, e) =>
-            //{
-            //    if (txtPassword != "1234")
-            //    {
-            //        passwordWrapper.Error = "Wrong password, try again";
-            //    }
-            //};
+            btnLogin.Click += (o, e) =>
+            {
+                LogIn();
+            };
 
             return view;
+        }
+
+        private void LogIn()
+        {
+            var username = "tkaminski93@gmail.com";
+            var hash = "hash";
+            var charges = 49;
+
+            var mainActiviy = (MainActivity)Activity;
+            StaticManager.LoggedIn = true;
+
+            var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
+            var editor = prefs.Edit();
+            editor.PutString("username", username);
+            editor.PutString("userhash", hash);
+            editor.PutInt("charges", charges);
+            editor.Commit();
+
+            StaticManager.UserName = username;
+            StaticManager.UserHash = hash;
+            StaticManager.Charges = charges;
+
+            mainActiviy.LogIn();
         }
     }
 }

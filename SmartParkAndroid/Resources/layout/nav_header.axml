@@ -2,12 +2,34 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
-    <ImageView
-        android:id="@+id/imgViewHeader"
+    android:id="@+id/nav_frame_header"
+    android:layout_height="224dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="@color/main_blue">
+    <LinearLayout
+        android:id="@+id/nav_linear_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/cover"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nav_header_text_view"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="#FFFFFFFF"
+            android:gravity="center"
+            android:textSize="18dp" />
+        <Button
+            android:text="Załóż konto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:id="@+id/header_register_btn"
+            android:background="#FFFFFF"
+            android:textColor="@color/main_blue"/>
+    </LinearLayout>
 </FrameLayout>

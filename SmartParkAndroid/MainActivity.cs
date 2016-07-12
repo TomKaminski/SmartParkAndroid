@@ -1,23 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Android.App;
-using Android.Bluetooth;
+﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Net;
 using Android.OS;
 using Android.Support.Design.Widget;
-using Android.Support.V4.App;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
-using Android.Test.Suitebuilder.Annotation;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
-using Java.Lang;
+using Android.Widget;
+using SmartParkAndroid.Core;
 using SmartParkAndroid.Fragments;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
-using SupportFragment = Android.Support.V4.App.Fragment;
-using SupportFragmentManager = Android.Support.V4.App.FragmentManager;
 
 namespace SmartParkAndroid
 {
@@ -30,6 +27,8 @@ namespace SmartParkAndroid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+
+            InitUserContext();
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -47,29 +46,112 @@ namespace SmartParkAndroid
             var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             if (navigationView != null)
             {
-                //HOME!
-                navigationView.Menu.GetItem(0).SetChecked(true);
                 SetUpDrawerContent(navigationView);
+                SetUpNavHeaderContent(navigationView);
             }
 
             _viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
 
             SetUpViewPager(_viewPager, navigationView);
+
+
+        }
+
+        private void SetUpNavHeaderContent(NavigationView view)
+        {
+            var sb = new SpannableStringBuilder(Resources.GetString(Resource.String.nav_header_not_logged_in_text));
+            var boldSpan = new StyleSpan(TypefaceStyle.Bold);
+            sb.SetSpan(boldSpan, 0, 11, SpanTypes.InclusiveInclusive);
+            var normalSpan = new StyleSpan(TypefaceStyle.Normal);
+            sb.SetSpan(normalSpan, 12, Resources.GetString(Resource.String.nav_header_not_logged_in_text).Length - 1, SpanTypes.InclusiveInclusive);
+
+            var navHeaderView = view.GetHeaderView(0);
+            var navHeaderTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_text_view);
+
+            navHeaderTextView.TextFormatted = sb;
+
+            var headerBtn = navHeaderView.FindViewById<Button>(Resource.Id.header_register_btn);
+            headerBtn.Click += OnClickNavHeaderBtn;
+        }
+
+        private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
+        {
+            var uri = Uri.Parse("http://smartparkath.azurewebsites.net/Portal");
+            var intent = new Intent(Intent.ActionView);
+            intent.SetData(uri);
+            var chooser = Intent.CreateChooser(intent, "Open with");
+            StartActivity(chooser);
         }
 
         private void SetUpViewPager(ViewPager viewPager, NavigationView navView)
         {
             var tabAdapter = new TabAdapter(SupportFragmentManager);
-            tabAdapter.AddFragment(new LoginFragment(), "Login Fragment", Resource.Id.nav_home);
-            tabAdapter.AddFragment(new TestFragment(), "Test Fragment", Resource.Id.nav_messages);
-
-            viewPager.Adapter = tabAdapter;
-            viewPager.PageSelected += (sender, ev) =>
+            if (StaticManager.LoggedIn)
             {
-                var menuItemList = Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
-                navView.Menu.GetItem(ev.Position).SetChecked(true);
-                SupportActionBar.Title = menuItemList[ev.Position];
-            };
+                tabAdapter.AddFragment(new LoggedInFragment(), "Logged In Fragment");
+                tabAdapter.AddFragment(new SettingsFragment(), "Settings Fragment");
+                tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
+
+                viewPager.Adapter = tabAdapter;
+                viewPager.PageSelected += (sender, ev) =>
+                {
+                    OnViewPagerPageSelected(navView, ev);
+                };
+            }
+            else
+            {
+                tabAdapter.AddFragment(new LoginFragment(), "Login Fragment");
+                tabAdapter.AddFragment(new RecoverPasswordFragment(), "Recover Password Fragment");
+                tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
+
+                viewPager.Adapter = tabAdapter;
+                viewPager.PageSelected += (sender, ev) =>
+                {
+                    OnViewPagerPageSelected(navView, ev);
+                };
+            }
+
+        }
+
+        private void OnViewPagerPageSelected(NavigationView navView, ViewPager.PageSelectedEventArgs ev)
+        {
+            var menuItemList = StaticManager.LoggedIn
+                ? Resources.GetStringArray(Resource.Array.logged_in_menu_string)
+                : Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
+            MenuItemsProvider.UncheckItems(navView.Menu);
+            navView.Menu.GetItem(ev.Position).SetChecked(true);
+            SupportActionBar.Title = menuItemList[ev.Position];
+        }
+
+        public void LogIn()
+        {
+            var navView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            SetUpViewPager(_viewPager, navView);
+            MenuItemsProvider.GetLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
+            navView.Menu.GetItem(0).SetChecked(true);
+
+        }
+
+        public void Logout()
+        {
+            LogoutUser();
+            var navView = FindViewById<NavigationView>(Resource.Id.nav_view);
+            SetUpViewPager(_viewPager, navView);
+            MenuItemsProvider.GetNotLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.not_logged_in_menu_string));
+            navView.Menu.GetItem(0).SetChecked(true);
+        }
+
+        private void LogoutUser()
+        {
+            StaticManager.LoggedIn = false;
+            StaticManager.UserHash = null;
+            StaticManager.UserName = null;
+
+            var preferences = GetPreferences(FileCreationMode.Private);
+            var prefEditor = preferences.Edit();
+            prefEditor.Remove("username");
+            prefEditor.Remove("userhash");
+            prefEditor.Commit();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -97,62 +179,78 @@ namespace SmartParkAndroid
             }
         }
 
+        private void InitUserContext()
+        {
+            var preferences = GetPreferences(FileCreationMode.Private);
+            var username = preferences.GetString("username", null);
+            var userHash = preferences.GetString("userhash", null);
+            var userCharges = preferences.GetInt("charges", 0);
+
+            if (username != null && userHash != null)
+            {
+                StaticManager.InitBase(true, username, userHash, userCharges);
+            }
+            else
+            {
+                StaticManager.InitBase(false, username, userHash, userCharges);
+            }
+        }
+
         private void SetUpDrawerContent(NavigationView navigationView)
         {
+            if (StaticManager.LoggedIn)
+            {
+                MenuItemsProvider.GetLoggedInMenuItems(navigationView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
+            }
+            else
+            {
+                MenuItemsProvider.GetNotLoggedInMenuItems(navigationView.Menu, Resources.GetStringArray(Resource.Array.not_logged_in_menu_string));
+            }
+
+            MenuItemsProvider.UncheckItems(navigationView.Menu);
+            navigationView.Menu.GetItem(0).SetChecked(true);
+
             navigationView.NavigationItemSelected += (sender, e) =>
             {
+                MenuItemsProvider.UncheckItems(navigationView.Menu);
                 e.MenuItem.SetChecked(true);
                 int drawerPositon;
                 switch (e.MenuItem.ItemId)
                 {
-                    case Resource.Id.nav_messages:
+
+                    case (int)MenuItems.About:
+                        {
+                            drawerPositon = 2;
+                            break;
+                        }
+                    case (int)MenuItems.Logout:
+                        {
+                            StaticManager.LoggedIn = false;
+                            Logout();
+                            drawerPositon = 0;
+                            break;
+                        }
+                    case (int)MenuItems.RecoverPassword:
+                    case (int)MenuItems.Settings:
                         {
                             drawerPositon = 1;
                             break;
                         }
-                    case Resource.Id.nav_home:
+                    case (int)MenuItems.Home:
                     default:
                         {
                             drawerPositon = 0;
                             break;
                         }
                 }
-                var menuItemList = Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
+                var menuItemList = StaticManager.LoggedIn
+                    ? Resources.GetStringArray(Resource.Array.logged_in_menu_string)
+                    : Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
+
                 SupportActionBar.Title = menuItemList[drawerPositon];
                 _viewPager.SetCurrentItem(drawerPositon, false);
                 _drawerLayout.CloseDrawers();
             };
-        }
-
-        public class TabAdapter : FragmentPagerAdapter
-        {
-            public List<SupportFragment> Fragments { get; set; }
-            public List<string> FragmentNames { get; set; }
-
-            public TabAdapter(SupportFragmentManager sfm) : base(sfm)
-            {
-                Fragments = new List<SupportFragment>();
-                FragmentNames = new List<string>();
-            }
-
-            public void AddFragment(SupportFragment fragment, string name, int id)
-            {
-                Fragments.Add(fragment);
-                FragmentNames.Add(name);
-            }
-
-            public override int Count => Fragments.Count;
-
-            public override SupportFragment GetItem(int position)
-            {
-                return Fragments[position];
-            }
-
-            public override ICharSequence GetPageTitleFormatted(int position)
-            {
-                return new Java.Lang.String(FragmentNames[position]);
-            }
-
         }
     }
 }

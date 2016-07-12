@@ -1,4 +1,5 @@
 ﻿<resources>
   <color name="window_background">#FFFFFFFF</color>
-  <color name="window_background_dark">#FF6FA1D8</color>
+  <color name="window_background_dark">#FF808080</color>
+  <color name="main_blue">#FF00aeef</color>
 </resources>

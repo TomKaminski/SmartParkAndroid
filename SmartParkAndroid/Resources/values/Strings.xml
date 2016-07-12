@@ -5,12 +5,15 @@
 
   <string-array name="not_logged_in_menu_string">
     <item>Home</item>
+    <item>Przypomnij hasło</item>
     <item>O aplikacji</item>
   </string-array>
 
   <string-array name="logged_in_menu_string">
     <item>Home</item>
+    <item>Ustawienia</item>
     <item>O aplikacji</item>
+    <item>Wyloguj</item>
   </string-array>
 
   <string name="about_header">smartPARK. Innowacja i wygoda.</string>
@@ -21,6 +24,10 @@
 
   <string name="about_desc_second">
     Na smartPARK składają się trzy elementy: infokiosk, w którym możliwe jest wykupienie abonamentu na wyjazdy oraz płatność kartą, aplikacja mobilna, która służy do łatwego, wygodnego i szybkiego otwierania szlabanu oraz serce całego systemu - Portal
+  </string>
+
+  <string name="nav_header_not_logged_in_text">
+    Załóż konto w smartPARK, \n i wykorzystaj w pełni \n funkcjonalności serwisu.
   </string>
   
 </resources>

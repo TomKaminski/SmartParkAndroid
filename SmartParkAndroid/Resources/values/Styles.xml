@@ -4,9 +4,9 @@
   </style>
 
   <style name="SmartParkThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
-    <item name="colorPrimary">#2e6cb2</item>
-    <item name="colorPrimaryDark">#132d4b</item>
-    <item name="colorAccent">#132d4b</item>
+    <item name="colorPrimary">#00aeef</item>
+    <item name="colorPrimaryDark">#2e6cb2</item>
+    <item name="colorAccent">#00aeef</item>
   </style>
 
   <style name="Widget.CardContent" parent="android:Widget">
