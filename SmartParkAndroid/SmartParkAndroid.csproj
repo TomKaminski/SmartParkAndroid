@@ -41,6 +41,9 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CalligraphyBindings">
+      <HintPath>..\..\..\..\..\Downloads\calligraphyxamarin-2.1\calligraphyxamarin-2.1\lib\android\CalligraphyBindings.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -73,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
     <Compile Include="Core\Helpers\SnackbarHelper.cs" />
     <Compile Include="Core\Helpers\TimerActionHelper.cs" />
     <Compile Include="Core\MenuItemsProvider.cs" />
@@ -88,6 +92,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\fonts\titil_bold.ttf" />
+    <AndroidAsset Include="Assets\fonts\titil_italic.ttf" />
+    <AndroidAsset Include="Assets\fonts\titil_light.ttf" />
+    <AndroidAsset Include="Assets\fonts\titil_reg.ttf" />
+    <AndroidAsset Include="Assets\fonts\titil_semibold.ttf" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
@@ -252,7 +261,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\logo_white.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo_unlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo_settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

@@ -30,6 +30,7 @@
             android:layout_marginRight="40dp"
             android:id="@+id/header_register_btn"
             android:background="#FFFFFF"
-            android:textColor="@color/main_blue"/>
+            android:textColor="@color/main_blue" 
+            fontPath="fonts/titil_bold.ttf"/>
     </LinearLayout>
 </FrameLayout>

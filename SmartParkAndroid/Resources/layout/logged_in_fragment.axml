@@ -6,11 +6,11 @@
     android:minWidth="25px"
     android:background="@color/window_background"
     android:minHeight="25px">
-    <ImageView
-        android:id="@+id/img_logo"
+  <ImageView
+        android:id="@+id/img_logo_logged_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo_white"
+        android:src="@drawable/logo_main"
         android:gravity="center"
         android:layout_gravity="top"
         android:layout_centerInParent="true"

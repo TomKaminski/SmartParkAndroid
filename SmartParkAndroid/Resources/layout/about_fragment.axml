@@ -7,7 +7,7 @@
     android:background="@color/window_background_dark"
     android:minHeight="25px">
     <ImageView
-        android:id="@+id/img_logo"
+        android:id="@+id/img_logo_about"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/logo_white"
@@ -32,7 +32,8 @@
             android:layout_marginBottom="10dp"
             android:textColor="#FFFFFFFF"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:gravity="center"
+            fontPath="fonts/titil_bold.ttf"/>
         <TextView
             android:text="@string/about_desc_first"
             android:layout_width="match_parent"
@@ -42,7 +43,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:textColor="#FFFFFFFF"
-            android:gravity="center" />
+            android:gravity="center"/>
         <TextView
             android:text="@string/about_desc_second"
             android:layout_width="match_parent"

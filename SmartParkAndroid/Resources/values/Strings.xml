@@ -17,17 +17,32 @@
   </string-array>
 
   <string name="about_header">smartPARK. Innowacja i wygoda.</string>
-    
   <string name="about_desc_first">
     system został stworzony przez studenta Informatyki na Wydziale Budowy Maszyn i Informatyki jako projekt pracy inżynierskiej. Zadaniem systemu jest ułatwienie studentom płatności za wjazd na parking uczelni oraz wyjazd.
   </string>
-
   <string name="about_desc_second">
     Na smartPARK składają się trzy elementy: infokiosk, w którym możliwe jest wykupienie abonamentu na wyjazdy oraz płatność kartą, aplikacja mobilna, która służy do łatwego, wygodnego i szybkiego otwierania szlabanu oraz serce całego systemu - Portal
   </string>
-
+  
   <string name="nav_header_not_logged_in_text">
     Załóż konto w smartPARK, \n i wykorzystaj w pełni \n funkcjonalności serwisu.
   </string>
-  
+
+  <string name="recovery_header">przypomnij swoje hasło.</string>
+  <string name="recovery_desc_first">
+    Aby zmienić hasło wpisz poniżej \n adres email, który podano przy rejestracji \n w systemie smartPARK.
+  </string>
+  <string name="recovery_desc_second">
+    Na podany adres email zostanie wysłana wiadomość z dalszymi instrukcjami.
+  </string>
+
+
+  <string name="settings_header">USTAWIENIA KONTA</string>
+  <string name="settings_desc_first">
+    Aby zmienić ustawienia swojego konta stuknij w poniższy przycisk, przeniesie Cię on do ustawień konta na portalu smartPARK.
+  </string>
+  <string name="settings_desc_second">
+    Uwaga, może być wymagane ponowne zalogowanie do portalu - użyj takich samych danych, które zostały użyte do zalogowania się do aplikacji mobilnej.
+  </string>
+
 </resources>

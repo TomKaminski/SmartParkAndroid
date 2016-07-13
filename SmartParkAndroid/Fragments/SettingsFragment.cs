@@ -1,5 +1,11 @@
+using Android.Content;
+using Android.Graphics;
+using Android.Net;
 using Android.OS;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
+using Android.Widget;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
@@ -17,7 +23,31 @@ namespace SmartParkAndroid.Fragments
         {
             View view = inflater.Inflate(Resource.Layout.settings_fragment, container, false);
 
+
+            var sb = new SpannableStringBuilder(Resources.GetString(Resource.String.settings_desc_first));
+            var boldSpan = new StyleSpan(TypefaceStyle.Bold);
+            var normalSpan = new StyleSpan(TypefaceStyle.Normal);
+
+            sb.SetSpan(normalSpan, 0, 104, SpanTypes.InclusiveInclusive);
+            sb.SetSpan(boldSpan, 105, Resources.GetString(Resource.String.settings_desc_first).Length - 1, SpanTypes.InclusiveInclusive);
+
+            var textView = view.FindViewById<TextView>(Resource.Id.settings_desc_textview_first);
+
+            textView.TextFormatted = sb;
+
+            var settingsBtn = view.FindViewById<Button>(Resource.Id.btnSettins);
+            settingsBtn.Click += SettingsBtn_Click;
+
             return view;
+        }
+
+        private void SettingsBtn_Click(object sender, System.EventArgs e)
+        {
+            var uri = Uri.Parse("http://smartparkath.azurewebsites.net/Portal/Konto");
+            var intent = new Intent(Intent.ActionView);
+            intent.SetData(uri);
+            var chooser = Intent.CreateChooser(intent, "Open with");
+            StartActivity(chooser);
         }
     }
 }

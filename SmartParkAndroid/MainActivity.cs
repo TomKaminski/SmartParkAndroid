@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
 using SmartParkAndroid.Fragments;
+using UK.CO.Chrisjenx.Calligraphy;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 
@@ -54,7 +55,14 @@ namespace SmartParkAndroid
 
             SetUpViewPager(_viewPager, navigationView);
 
+            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
+            fab.Click += OnClickNavHeaderBtn;
+        }
+
+        protected override void AttachBaseContext(Context @base)
+        {
+            base.AttachBaseContext(CalligraphyContextWrapper.Wrap(@base));
         }
 
         private void SetUpNavHeaderContent(NavigationView view)
@@ -69,9 +77,6 @@ namespace SmartParkAndroid
             var navHeaderTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_text_view);
 
             navHeaderTextView.TextFormatted = sb;
-
-            var headerBtn = navHeaderView.FindViewById<Button>(Resource.Id.header_register_btn);
-            headerBtn.Click += OnClickNavHeaderBtn;
         }
 
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
@@ -166,13 +171,6 @@ namespace SmartParkAndroid
             {
                 case Android.Resource.Id.Home:
                     _drawerLayout.OpenDrawer((int)GravityFlags.Left);
-                    return true;
-                case Resource.Id.action_web:
-                    var uri = Uri.Parse("http://smartparkath.azurewebsites.net");
-                    var intent = new Intent(Intent.ActionView);
-                    intent.SetData(uri);
-                    var chooser = Intent.CreateChooser(intent, "Open with");
-                    StartActivity(chooser);
                     return true;
                 default:
                     return base.OnOptionsItemSelected(item);

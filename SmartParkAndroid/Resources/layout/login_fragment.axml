@@ -6,7 +6,7 @@
     android:background="@color/window_background"
     android:padding="16dp">
     <ImageView
-        android:id="@+id/img_logo"
+        android:id="@+id/img_logo_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/logo_main"
@@ -58,6 +58,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/main_blue"
             android:textColor="#FFFFFF"
-            android:textSize="18dp" />
+            android:textSize="18dp" 
+            fontPath="fonts/titil_bold.ttf"/>
     </LinearLayout>
 </FrameLayout>
