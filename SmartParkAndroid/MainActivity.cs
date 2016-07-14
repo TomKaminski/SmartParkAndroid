@@ -103,7 +103,11 @@ namespace SmartParkAndroid
         {
             RemoveNavHeaders(view);
             view.InflateHeaderView(Resource.Layout.nav_header_logged);
-            //var navHeaderView = view.GetHeaderView(0);
+            var navHeaderView = view.GetHeaderView(0);
+
+            var emailTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_email_logged_in);
+            emailTextView.Text = StaticManager.UserName;
+
             //var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
             //circleImgView.SetImageURI(Uri.Parse("http://smartparkath.azurewebsites.net/images/user-avatars/6d560766-0073-452f-b492-df13d17a0f2a.jpg"));
         }
