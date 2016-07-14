@@ -48,14 +48,22 @@ namespace SmartParkAndroid
             if (navigationView != null)
             {
                 SetUpDrawerContent(navigationView);
-                SetUpNavHeaderContent(navigationView);
+                if (StaticManager.LoggedIn)
+                {
+                    SetUpNavHeaderLoggedInContent(navigationView);
+                }
+                else
+                {
+                    SetUpNavHeaderContent(navigationView);
+                }
+
             }
 
             _viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
 
             SetUpViewPager(_viewPager, navigationView);
 
-            FloatingActionButton fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
             fab.Click += OnClickNavHeaderBtn;
         }
@@ -65,20 +73,41 @@ namespace SmartParkAndroid
             base.AttachBaseContext(CalligraphyContextWrapper.Wrap(@base));
         }
 
+        private void RemoveNavHeaders(NavigationView view)
+        {
+            var headersInNav = view.HeaderCount;
+            for (int i = 0; i < headersInNav; i++)
+            {
+                view.RemoveHeaderView(view.GetHeaderView(i));
+            }
+        }
+
         private void SetUpNavHeaderContent(NavigationView view)
         {
+            RemoveNavHeaders(view);
+            view.InflateHeaderView(Resource.Layout.nav_header);
+
             var sb = new SpannableStringBuilder(Resources.GetString(Resource.String.nav_header_not_logged_in_text));
             var boldSpan = new StyleSpan(TypefaceStyle.Bold);
             sb.SetSpan(boldSpan, 0, 11, SpanTypes.InclusiveInclusive);
             var normalSpan = new StyleSpan(TypefaceStyle.Normal);
             sb.SetSpan(normalSpan, 12, Resources.GetString(Resource.String.nav_header_not_logged_in_text).Length - 1, SpanTypes.InclusiveInclusive);
-
+            
             var navHeaderView = view.GetHeaderView(0);
             var navHeaderTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_text_view);
 
             navHeaderTextView.TextFormatted = sb;
         }
 
+        private void SetUpNavHeaderLoggedInContent(NavigationView view)
+        {
+            RemoveNavHeaders(view);
+            view.InflateHeaderView(Resource.Layout.nav_header_logged);
+            //var navHeaderView = view.GetHeaderView(0);
+            //var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
+            //circleImgView.SetImageURI(Uri.Parse("http://smartparkath.azurewebsites.net/images/user-avatars/6d560766-0073-452f-b492-df13d17a0f2a.jpg"));
+        }
+        
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
         {
             var uri = Uri.Parse("http://smartparkath.azurewebsites.net/Portal");
@@ -134,6 +163,7 @@ namespace SmartParkAndroid
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
             navView.Menu.GetItem(0).SetChecked(true);
+            SetUpNavHeaderLoggedInContent(navView);
 
         }
 
@@ -144,6 +174,8 @@ namespace SmartParkAndroid
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetNotLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.not_logged_in_menu_string));
             navView.Menu.GetItem(0).SetChecked(true);
+            SetUpNavHeaderContent(navView);
+
         }
 
         private void LogoutUser()

@@ -1,9 +1,5 @@
-using System;
-using System.Timers;
-using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
@@ -27,8 +23,11 @@ namespace SmartParkAndroid.Fragments
         {
             var view = inflater.Inflate(Resource.Layout.logged_in_fragment, container, false);
 
-            view.FindViewById<TextView>(Resource.Id.logged_as).Text = StaticManager.UserName;
-            view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
+            view.FindViewById<TextView>(Resource.Id.logged_as_email).Text = StaticManager.UserName;
+            var chargesTextView = view.FindViewById<TextView>(Resource.Id.charges_num);
+            chargesTextView.Text = StaticManager.Charges.ToString();
+
+            SetChargesColor(view);
 
             var btnOpenGate = view.FindViewById<Button>(Resource.Id.open_gate_btn);
             btnOpenGate.Click += (sender, e) =>
@@ -36,14 +35,30 @@ namespace SmartParkAndroid.Fragments
                 OnClickOpenGate(sender, e, view);
             };
 
-            var btnRefreshCharges = view.FindViewById<Button>(Resource.Id.btnRefresh);
-            btnRefreshCharges.Click += (sender, e) =>
+            chargesTextView.Click += (sender, e) =>
             {
                 OnClickRefreshCharges(sender, e, view);
             };
 
+            
+
             return view;
         }
+
+        private void SetChargesColor(View view)
+        {
+            var textView = view.FindViewById<TextView>(Resource.Id.charges_num);
+            if (StaticManager.Charges <= 5)
+            {
+                textView.SetTextColor(Resources.GetColor(Resource.Color.main_red));
+            }
+            else if (StaticManager.Charges <= 10)
+            {
+                textView.SetTextColor(Resources.GetColor(Resource.Color.main_orange));
+            }
+        }
+
+     
 
         private void OnClickRefreshCharges(object sender, System.EventArgs e, View view)
         {
@@ -86,6 +101,7 @@ namespace SmartParkAndroid.Fragments
                     return true;
                 }, toElapse);
                 SnackbarHelper.ShowSnackbar("Brama otwierana, mi³ego dnia!", view, false, true);
+                SetChargesColor(view);
             }
             else
             {

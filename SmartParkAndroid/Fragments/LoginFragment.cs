@@ -38,7 +38,7 @@ namespace SmartParkAndroid.Fragments
         {
             var username = "tkaminski93@gmail.com";
             var hash = "hash";
-            var charges = 49;
+            var charges = 12;
 
             var mainActiviy = (MainActivity)Activity;
             StaticManager.LoggedIn = true;

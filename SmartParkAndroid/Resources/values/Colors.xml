@@ -2,4 +2,8 @@
   <color name="window_background">#FFFFFFFF</color>
   <color name="window_background_dark">#FF808080</color>
   <color name="main_blue">#FF00aeef</color>
+  <color name="main_red">#FFEA454B</color>
+  <color name="main_orange">#FFFF672B</color>
+  <color name="main_green">#FF4CAF50</color>
+  <color name="light">#FFEEEEEE</color>
 </resources>
