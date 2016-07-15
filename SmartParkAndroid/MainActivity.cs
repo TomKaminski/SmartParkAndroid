@@ -28,6 +28,7 @@ namespace SmartParkAndroid
 
         protected override void OnCreate(Bundle bundle)
         {
+            
             RequestedOrientation = ScreenOrientation.Portrait;
 
             base.OnCreate(bundle);

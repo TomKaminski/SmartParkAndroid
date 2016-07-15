@@ -24,6 +24,7 @@ namespace SmartParkAndroid.Core
 
         public CustomViewPager(Context context, IAttributeSet attrs) : base(context, attrs)
         {
+            _swipeEnabled = true;
         }
 
         public override bool OnTouchEvent(MotionEvent e)

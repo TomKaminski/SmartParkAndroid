@@ -3289,6 +3289,9 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f090140
 			public const int Base_Widget_Design_TabLayout = 2131296576;
 			
+			// aapt resource value: 0x7f09015a
+			public const int LinearProgress = 2131296602;
+			
 			// aapt resource value: 0x7f090017
 			public const int Platform_AppCompat = 2131296279;
 			
