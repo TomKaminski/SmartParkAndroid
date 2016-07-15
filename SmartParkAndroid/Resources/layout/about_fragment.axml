@@ -33,7 +33,7 @@
             android:textColor="#FFFFFFFF"
             android:textStyle="bold"
             android:gravity="center"
-            fontPath="fonts/titil_bold.ttf"/>
+            fontPath="fonts/titil_bold.ttf" />
         <TextView
             android:text="@string/about_desc_first"
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:textColor="#FFFFFFFF"
-            android:gravity="center"/>
+            android:gravity="center" />
         <TextView
             android:text="@string/about_desc_second"
             android:layout_width="match_parent"

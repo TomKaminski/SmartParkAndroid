@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.Net;
 using Android.OS;
@@ -23,10 +24,12 @@ namespace SmartParkAndroid
     public class MainActivity : AppCompatActivity
     {
         private DrawerLayout _drawerLayout;
-        private ViewPager _viewPager;
+        private CustomViewPager _viewPager;
 
         protected override void OnCreate(Bundle bundle)
         {
+            RequestedOrientation = ScreenOrientation.Portrait;
+
             base.OnCreate(bundle);
 
             InitUserContext();
@@ -59,7 +62,7 @@ namespace SmartParkAndroid
 
             }
 
-            _viewPager = FindViewById<ViewPager>(Resource.Id.viewpager);
+            _viewPager = FindViewById<CustomViewPager>(Resource.Id.viewpager);
 
             SetUpViewPager(_viewPager, navigationView);
 
@@ -121,7 +124,7 @@ namespace SmartParkAndroid
             StartActivity(chooser);
         }
 
-        private void SetUpViewPager(ViewPager viewPager, NavigationView navView)
+        private void SetUpViewPager(CustomViewPager viewPager, NavigationView navView)
         {
             var tabAdapter = new TabAdapter(SupportFragmentManager);
             if (StaticManager.LoggedIn)

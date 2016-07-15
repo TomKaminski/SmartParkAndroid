@@ -2,6 +2,10 @@
 <resources>
   
   <string name="ApplicationName">SmartPARK</string>
+  <string name="open_gate_text">Przytrzymaj, \n aby otworzyć bramę</string>
+  <string name="open_gate_text_stop">Zwolnij przycisk</string>
+
+
 
   <string-array name="not_logged_in_menu_string">
     <item>Home</item>
