@@ -54,7 +54,7 @@ namespace SmartParkAndroid
                 SetUpDrawerContent(navigationView);
                 if (StaticManager.LoggedIn)
                 {
-                    SetUpNavHeaderLoggedInContent(navigationView);
+                    SetUpNavHeaderLoggedInContent(navigationView, StaticManager.ImageId);
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace SmartParkAndroid
             navHeaderTextView.TextFormatted = sb;
         }
 
-        private void SetUpNavHeaderLoggedInContent(NavigationView view)
+        private void SetUpNavHeaderLoggedInContent(NavigationView view, string imageId)
         {
             RemoveNavHeaders(view);
             view.InflateHeaderView(Resource.Layout.nav_header_logged);
@@ -112,8 +112,8 @@ namespace SmartParkAndroid
             var emailTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_email_logged_in);
             emailTextView.Text = StaticManager.UserName;
 
-            //var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
-            //circleImgView.SetImageURI(Uri.Parse("http://smartparkath.azurewebsites.net/images/user-avatars/6d560766-0073-452f-b492-df13d17a0f2a.jpg"));
+            var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
+            circleImgView.SetImageURL(string.Format("http://smartparkath.azurewebsites.net/images/user-avatars/{0}", imageId));
         }
         
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
@@ -171,7 +171,7 @@ namespace SmartParkAndroid
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
             navView.Menu.GetItem(0).SetChecked(true);
-            SetUpNavHeaderLoggedInContent(navView);
+            SetUpNavHeaderLoggedInContent(navView, StaticManager.ImageId);
 
         }
 
@@ -223,14 +223,15 @@ namespace SmartParkAndroid
             var username = preferences.GetString("username", null);
             var userHash = preferences.GetString("userhash", null);
             var userCharges = preferences.GetInt("charges", 0);
+            var imageId = preferences.GetString("imageid", "avatar-placeholder.jpg");
 
             if (username != null && userHash != null)
             {
-                StaticManager.InitBase(true, username, userHash, userCharges);
+                StaticManager.InitBase(true, username, userHash, userCharges,imageId);
             }
             else
             {
-                StaticManager.InitBase(false, username, userHash, userCharges);
+                StaticManager.InitBase(false, username, userHash, userCharges, imageId);
             }
         }
 

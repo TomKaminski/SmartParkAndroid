@@ -106,7 +106,7 @@ namespace SmartParkAndroid.Fragments
                     _viewPager.SetSwipePagingEnabled(true);
                     _handler.RemoveCallbacks(_longPressedRunnable);
                     button.SetTextColor(Resources.GetColor(Resource.Color.main_blue));
-                    button.Text = Resources.GetString(Resource.String.open_gate_text);
+                    button.Text = "Chwileczkê...";
 
                     if (isDelayedForTwoSeconds)
                     {
@@ -190,6 +190,7 @@ namespace SmartParkAndroid.Fragments
             {
                 Activity.RunOnUiThread(() =>
                 {
+                    button.Enabled = false;
                     (Activity as MainActivity).ShowProgressBar();
                 });
                 var smartHttpClient = new SmartParkHttpClient();
@@ -234,9 +235,6 @@ namespace SmartParkAndroid.Fragments
                 editor.Commit();
 
                 view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
-
-                button.Enabled = false;
-
                 const int toElapse = 5;
                 int counter = 5;
                 button.Text = $"{toElapse}...";

@@ -125,12 +125,14 @@ namespace SmartParkAndroid.Fragments
                 var editor = prefs.Edit();
                 editor.PutString("username", model.Result.Email);
                 editor.PutString("userhash", model.Result.PasswordHash);
+                editor.PutString("imageid", model.Result.ImageId);
                 editor.PutInt("charges", model.Result.Charges);
                 editor.Commit();
 
                 StaticManager.UserName = model.Result.Email;
                 StaticManager.UserHash = model.Result.PasswordHash;
                 StaticManager.Charges = model.Result.Charges;
+                StaticManager.ImageId = model.Result.ImageId;
 
                 mainActiviy.LogIn();
             }

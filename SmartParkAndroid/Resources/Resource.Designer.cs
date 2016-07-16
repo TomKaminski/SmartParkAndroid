@@ -1923,34 +1923,31 @@ namespace SmartParkAndroid
 			public const int Icon = 2130837593;
 			
 			// aapt resource value: 0x7f02005a
-			public const int Kasia = 2130837594;
+			public const int logo_main = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int logo_main = 2130837595;
+			public const int logo_settings = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int logo_settings = 2130837596;
+			public const int logo_unlock = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int logo_unlock = 2130837597;
+			public const int logo_white = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int logo_white = 2130837598;
-			
-			// aapt resource value: 0x7f02005f
-			public const int logotyp_globe_web = 2130837599;
-			
-			// aapt resource value: 0x7f020063
-			public const int notification_template_icon_bg = 2130837603;
-			
-			// aapt resource value: 0x7f020060
-			public const int round_button = 2130837600;
-			
-			// aapt resource value: 0x7f020061
-			public const int round_button_filled = 2130837601;
+			public const int logotyp_globe_web = 2130837598;
 			
 			// aapt resource value: 0x7f020062
-			public const int smartpark_button = 2130837602;
+			public const int notification_template_icon_bg = 2130837602;
+			
+			// aapt resource value: 0x7f02005f
+			public const int round_button = 2130837599;
+			
+			// aapt resource value: 0x7f020060
+			public const int round_button_filled = 2130837600;
+			
+			// aapt resource value: 0x7f020061
+			public const int smartpark_button = 2130837601;
 			
 			static Drawable()
 			{

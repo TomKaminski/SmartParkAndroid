@@ -1,36 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:id="@+id/nav_frame_header_logged_in"
     android:layout_height="240dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:background="@color/main_blue">
-  <LinearLayout
-      android:id="@+id/nav_linear_header"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:layout_gravity="center" >
-    <smartparkandroid.core.CircularImageView
-           android:layout_width="match_parent"
-           android:layout_height="140dp"
-           android:layout_centerInParent="true"
-           android:id="@+id/circle_photo_image"
-           android:src="@drawable/Kasia"
-           app:civ_border_width="3dp"
-           app:civ_border_color="@color/light" />
-    <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:id="@+id/nav_header_email_logged_in"
-           android:layout_marginLeft="15dp"
-           android:layout_marginRight="15dp"
-           android:layout_marginTop="15dp"
-           android:textColor="#FFFFFFFF"
-           android:gravity="center"
-           android:textSize="14dp"
-           fontPath="fonts/titil_bold.ttf"/>
-  </LinearLayout>
+    <LinearLayout
+        android:id="@+id/nav_linear_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <smartparkandroid.core.CircularImageView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/circle_photo_image"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/light" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/nav_header_email_logged_in"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:textColor="#FFFFFFFF"
+            android:gravity="center"
+            android:textSize="14dp"
+            fontPath="fonts/titil_bold.ttf" />
+    </LinearLayout>
 </FrameLayout>

@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
@@ -182,62 +183,6 @@ namespace SmartParkAndroid.Core
             Invalidate();
         }
 
-
-        //@Deprecated
-        public void SetBorderColorResource(int borderColorRes)
-        {
-            SetBorderColor(Context.Resources.GetColor(borderColorRes));
-        }
-
-        /**
-         * Return the color drawn behind the circle-shaped drawable.
-         *
-         * @return The color drawn behind the drawable
-         *
-         * @deprecated Fill color support is going to be removed in the future
-         */
-        //@Deprecated
-    public int GetFillColor()
-        {
-            return mFillColor;
-        }
-
-        /**
-         * Set a color to be drawn behind the circle-shaped drawable. Note that
-         * this has no effect if the drawable is opaque or no drawable is set.
-         *
-         * @param fillColor The color to be drawn behind the drawable
-         *
-         * @deprecated Fill color support is going to be removed in the future
-         */
-        //@Deprecated
-    public void SetFillColor(int fillColor)
-        {
-            if (fillColor == mFillColor)
-            {
-                return;
-            }
-
-            mFillColor = fillColor;
-            mFillPaint.Color = Resources.GetColor(fillColor);
-            Invalidate();
-        }
-
-        /**
-         * Set a color to be drawn behind the circle-shaped drawable. Note that
-         * this has no effect if the drawable is opaque or no drawable is set.
-         *
-         * @param fillColorRes The color resource to be resolved to a color and
-         *                     drawn behind the drawable
-         *
-         * @deprecated Fill color support is going to be removed in the future
-         */
-        //@Deprecated
-    public void SetFillColorResource(int fillColorRes)
-        {
-            SetFillColor(Context.Resources.GetColor(fillColorRes));
-        }
-
         public int getBorderWidth()
         {
             return mBorderWidth;
@@ -303,10 +248,24 @@ namespace SmartParkAndroid.Core
             initializeBitmap();
         }
 
-        public override void SetImageURI(Android.Net.Uri uri)
+        public void SetImageURL(string uri)
         {
-            base.SetImageURI(uri);
-            initializeBitmap();
+            var imageBitmap = GetBitmapFromUrl(uri);
+            mBitmap = imageBitmap;
+            Setup();
+        }
+
+        private static Bitmap GetBitmapFromUrl(string url)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] bytes = webClient.DownloadData(url);
+                if (bytes != null && bytes.Length > 0)
+                {
+                    return Android.Graphics.BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length);
+                }
+            }
+            return null;
         }
 
         public override void SetColorFilter(ColorFilter cf)

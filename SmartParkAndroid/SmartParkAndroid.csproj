@@ -296,9 +296,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Kasia.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\anim\slide_down_fade_out.xml">
       <SubType>Designer</SubType>
     </AndroidResource>

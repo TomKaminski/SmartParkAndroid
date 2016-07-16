@@ -7,5 +7,6 @@ namespace SmartParkAndroid.Models
         public string Email { get; set; }
         public int Charges { get; set; }
         public string PasswordHash { get; set; }
+        public string ImageId { get; set; }
     }
 }
