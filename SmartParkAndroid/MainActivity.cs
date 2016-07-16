@@ -290,6 +290,16 @@ namespace SmartParkAndroid
                 _drawerLayout.CloseDrawers();
             };
         }
+
+        public void ShowProgressBar()
+        {
+            FindViewById<ProgressBar>(Resource.Id.progress_bar).Visibility = ViewStates.Visible;
+        }
+
+        public void HideProgressBar()
+        {
+            FindViewById<ProgressBar>(Resource.Id.progress_bar).Visibility = ViewStates.Invisible;
+        }
     }
 }
 

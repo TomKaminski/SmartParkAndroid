@@ -22,7 +22,6 @@
         android:orientation="vertical"
         android:layout_gravity="center">
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/txtInputLayoutText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -32,20 +31,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:inputType="textEmailAddress"
+                android:id="@+id/txtInputEmail"
                 android:hint="adres email" />
         </android.support.design.widget.TextInputLayout>
-
-      <smartparkandroid.core.EditTextPassword
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_marginLeft="10dp"
-         android:layout_marginRight="10dp"
-         android:hint="hasło"
-         android:inputType="textPassword"
-         android:layout_gravity="center"
-         android:id="@+id/txtPassword"/>
-
-
+        <smartparkandroid.core.EditTextPassword
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="hasło"
+            android:inputType="textPassword"
+            android:layout_gravity="center"
+            android:id="@+id/txtPassword" />
         <Button
             android:id="@+id/btnLogin"
             android:layout_marginTop="10dp"
@@ -54,7 +51,7 @@
             android:text="Zaloguj"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:background="@color/main_blue"
+            android:background="@drawable/smartpark_button"
             android:textColor="#FFFFFF"
             android:textSize="18dp"
             fontPath="fonts/titil_bold.ttf" />

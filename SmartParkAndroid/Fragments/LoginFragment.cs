@@ -1,9 +1,14 @@
+using System;
+using System.Linq;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
+using SmartParkAndroid.Core.Helpers;
+using SmartParkAndroid.Models;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 
@@ -23,38 +28,118 @@ namespace SmartParkAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.login_fragment, container, false);
 
             var btnLogin = view.FindViewById<Button>(Resource.Id.btnLogin);
-            var passwordWrapper = view.FindViewById<EditText>(Resource.Id.txtPassword);
-            var txtPassword = passwordWrapper.Text;
+            var passwordInput = view.FindViewById<EditTextPassword>(Resource.Id.txtPassword);
+            var emailInput = view.FindViewById<EditText>(Resource.Id.txtInputEmail);
 
-            btnLogin.Click += (o, e) =>
+            emailInput.AfterTextChanged += EmailInput_AfterTextChanged;
+            passwordInput.AfterTextChanged += PasswordInput_AfterTextChanged;
+
+            btnLogin.Click += async (o, e) =>
             {
-                LogIn();
+                if (EmailValidateFunc(emailInput) && PasswordValidationFunc(passwordInput))
+                {
+                    btnLogin.Enabled = false;
+                    Activity.RunOnUiThread(() =>
+                    {
+                        (Activity as MainActivity).ShowProgressBar();
+                    });
+                    var txtPassword = passwordInput.Text;
+                    var txtEmail = emailInput.Text;
+                    var smartHttpClient = new SmartParkHttpClient();
+                    await smartHttpClient.Post<SmartJsonResult<User>, object>(new Uri("https://smartparkath.azurewebsites.net/api/Account/Login", UriKind.Absolute),
+                        new
+                        {
+                            Username = txtEmail,
+                            Password = txtPassword
+                        }, response =>
+                        {
+                            Activity.RunOnUiThread(() =>
+                            {
+                                btnLogin.Enabled = true;
+                                (Activity as MainActivity).HideProgressBar();
+                                LogIn(response, view);
+                            });
+                            return true;
+                        }, null, response =>
+                        {
+                            Activity.RunOnUiThread(() =>
+                            {
+                                btnLogin.Enabled = true;
+                                (Activity as MainActivity).HideProgressBar();
+                                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                            });
+                            return true;
+                        });
+                }
             };
-
             return view;
         }
 
-        private void LogIn()
+        private void PasswordInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
-            var username = "tkaminski93@gmail.com";
-            var hash = "hash";
-            var charges = 12;
-
-            var mainActiviy = (MainActivity)Activity;
-            StaticManager.LoggedIn = true;
-
-            var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
-            var editor = prefs.Edit();
-            editor.PutString("username", username);
-            editor.PutString("userhash", hash);
-            editor.PutInt("charges", charges);
-            editor.Commit();
-
-            StaticManager.UserName = username;
-            StaticManager.UserHash = hash;
-            StaticManager.Charges = charges;
-
-            mainActiviy.LogIn();
+            PasswordValidationFunc((TextView)sender);
         }
+
+        private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
+        {
+            EmailValidateFunc((TextView) sender);
+        }
+
+        private bool EmailValidateFunc(TextView textView)
+        {
+            if (string.IsNullOrEmpty(textView.Text))
+            {
+                textView.Error = "Adres email jest wymagany";
+                return false;
+            }
+            try
+            {
+                var m = new MailAddress(textView.Text);
+                return true;
+            }
+            catch (FormatException)
+            {
+                textView.Error = "Podany adres email jest niepoprawny";
+                return false;
+            }
+        }
+
+        private bool PasswordValidationFunc(TextView textView)
+        {
+            if (string.IsNullOrEmpty(textView.Text))
+            {
+                textView.Error = "Has³o jest wymagane";
+                return false;
+            }
+            return true;
+        }
+
+        private void LogIn(SmartJsonResult<User> model, View view)
+        {
+            if (model.IsValid)
+            {
+                var mainActiviy = (MainActivity)Activity;
+                StaticManager.LoggedIn = true;
+
+                var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
+                var editor = prefs.Edit();
+                editor.PutString("username", model.Result.Email);
+                editor.PutString("userhash", model.Result.PasswordHash);
+                editor.PutInt("charges", model.Result.Charges);
+                editor.Commit();
+
+                StaticManager.UserName = model.Result.Email;
+                StaticManager.UserHash = model.Result.PasswordHash;
+                StaticManager.Charges = model.Result.Charges;
+
+                mainActiviy.LogIn();
+            }
+            else
+            {
+                SnackbarHelper.ShowSnackbar(model.ValidationErrors.FirstOrDefault(), view, true, true);
+            }
+
+        }
+
     }
 }

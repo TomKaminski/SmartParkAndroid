@@ -26,6 +26,7 @@ namespace SmartParkAndroid
 		
 		public static void UpdateIdValues()
 		{
+			global::ModernHttpClient.Resource.String.library_name = global::SmartParkAndroid.Resource.String.library_name;
 		}
 		
 		public partial class Animation
@@ -1939,14 +1940,17 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f02005f
 			public const int logotyp_globe_web = 2130837599;
 			
-			// aapt resource value: 0x7f020062
-			public const int notification_template_icon_bg = 2130837602;
+			// aapt resource value: 0x7f020063
+			public const int notification_template_icon_bg = 2130837603;
 			
 			// aapt resource value: 0x7f020060
 			public const int round_button = 2130837600;
 			
 			// aapt resource value: 0x7f020061
 			public const int round_button_filled = 2130837601;
+			
+			// aapt resource value: 0x7f020062
+			public const int smartpark_button = 2130837602;
 			
 			static Drawable()
 			{
@@ -1970,8 +1974,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06006b
 			public const int about_header_textview = 2131099755;
 			
-			// aapt resource value: 0x7f060091
-			public const int action0 = 2131099793;
+			// aapt resource value: 0x7f060092
+			public const int action0 = 2131099794;
 			
 			// aapt resource value: 0x7f06005b
 			public const int action_bar = 2131099739;
@@ -1997,8 +2001,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06005c
 			public const int action_context_bar = 2131099740;
 			
-			// aapt resource value: 0x7f060095
-			public const int action_divider = 2131099797;
+			// aapt resource value: 0x7f060096
+			public const int action_divider = 2131099798;
 			
 			// aapt resource value: 0x7f060003
 			public const int action_menu_divider = 2131099651;
@@ -2033,14 +2037,14 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06002b
 			public const int bottom = 2131099691;
 			
-			// aapt resource value: 0x7f060087
-			public const int btnLogin = 2131099783;
+			// aapt resource value: 0x7f060088
+			public const int btnLogin = 2131099784;
 			
-			// aapt resource value: 0x7f0600a9
-			public const int btnSettins = 2131099817;
+			// aapt resource value: 0x7f0600aa
+			public const int btnSettins = 2131099818;
 			
-			// aapt resource value: 0x7f0600a4
-			public const int btn_recover_password = 2131099812;
+			// aapt resource value: 0x7f0600a5
+			public const int btn_recover_password = 2131099813;
 			
 			// aapt resource value: 0x7f060045
 			public const int buttonPanel = 2131099717;
@@ -2048,8 +2052,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06000b
 			public const int calligraphy_tag_id = 2131099659;
 			
-			// aapt resource value: 0x7f060092
-			public const int cancel_action = 2131099794;
+			// aapt resource value: 0x7f060093
+			public const int cancel_action = 2131099795;
 			
 			// aapt resource value: 0x7f06002c
 			public const int center = 2131099692;
@@ -2060,23 +2064,23 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06002e
 			public const int center_vertical = 2131099694;
 			
-			// aapt resource value: 0x7f060081
-			public const int charges_num = 2131099777;
-			
-			// aapt resource value: 0x7f060080
-			public const int charges_prefix = 2131099776;
-			
 			// aapt resource value: 0x7f060082
-			public const int charges_suffix = 2131099778;
+			public const int charges_num = 2131099778;
+			
+			// aapt resource value: 0x7f060081
+			public const int charges_prefix = 2131099777;
+			
+			// aapt resource value: 0x7f060083
+			public const int charges_suffix = 2131099779;
 			
 			// aapt resource value: 0x7f060053
 			public const int checkbox = 2131099731;
 			
-			// aapt resource value: 0x7f060098
-			public const int chronometer = 2131099800;
+			// aapt resource value: 0x7f060099
+			public const int chronometer = 2131099801;
 			
-			// aapt resource value: 0x7f06008f
-			public const int circle_photo_image = 2131099791;
+			// aapt resource value: 0x7f060090
+			public const int circle_photo_image = 2131099792;
 			
 			// aapt resource value: 0x7f060034
 			public const int clip_horizontal = 2131099700;
@@ -2120,8 +2124,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06000f
 			public const int disableHome = 2131099663;
 			
-			// aapt resource value: 0x7f060088
-			public const int drawer_layout = 2131099784;
+			// aapt resource value: 0x7f060089
+			public const int drawer_layout = 2131099785;
 			
 			// aapt resource value: 0x7f06005d
 			public const int edit_query = 2131099741;
@@ -2129,8 +2133,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06001d
 			public const int end = 2131099677;
 			
-			// aapt resource value: 0x7f06009d
-			public const int end_padder = 2131099805;
+			// aapt resource value: 0x7f06009e
+			public const int end_padder = 2131099806;
 			
 			// aapt resource value: 0x7f060024
 			public const int enterAlways = 2131099684;
@@ -2162,8 +2166,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060039
 			public const int @fixed = 2131099705;
 			
-			// aapt resource value: 0x7f06008d
-			public const int header_register_btn = 2131099789;
+			// aapt resource value: 0x7f06008e
+			public const int header_register_btn = 2131099790;
 			
 			// aapt resource value: 0x7f060005
 			public const int home = 2131099653;
@@ -2183,29 +2187,29 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06006a
 			public const int img_logo_about = 2131099754;
 			
-			// aapt resource value: 0x7f06007d
-			public const int img_logo_logged_in = 2131099773;
+			// aapt resource value: 0x7f06007e
+			public const int img_logo_logged_in = 2131099774;
 			
-			// aapt resource value: 0x7f060084
-			public const int img_logo_login = 2131099780;
+			// aapt resource value: 0x7f060085
+			public const int img_logo_login = 2131099781;
 			
-			// aapt resource value: 0x7f06009e
-			public const int img_logo_recover = 2131099806;
+			// aapt resource value: 0x7f06009f
+			public const int img_logo_recover = 2131099807;
 			
-			// aapt resource value: 0x7f0600a5
-			public const int img_logo_settings = 2131099813;
+			// aapt resource value: 0x7f0600a6
+			public const int img_logo_settings = 2131099814;
 			
-			// aapt resource value: 0x7f06007f
-			public const int img_refresh_charges_arrows = 2131099775;
+			// aapt resource value: 0x7f060080
+			public const int img_refresh_charges_arrows = 2131099776;
 			
-			// aapt resource value: 0x7f06009c
-			public const int info = 2131099804;
-			
-			// aapt resource value: 0x7f0600a2
-			public const int input_recovery_password = 2131099810;
+			// aapt resource value: 0x7f06009d
+			public const int info = 2131099805;
 			
 			// aapt resource value: 0x7f0600a3
-			public const int input_recovery_password_email = 2131099811;
+			public const int input_recovery_password = 2131099811;
+			
+			// aapt resource value: 0x7f0600a4
+			public const int input_recovery_password_email = 2131099812;
 			
 			// aapt resource value: 0x7f060000
 			public const int item_touch_helper_previous_elevation = 2131099648;
@@ -2213,11 +2217,11 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060030
 			public const int left = 2131099696;
 			
-			// aapt resource value: 0x7f060096
-			public const int line1 = 2131099798;
+			// aapt resource value: 0x7f060097
+			public const int line1 = 2131099799;
 			
-			// aapt resource value: 0x7f06009a
-			public const int line3 = 2131099802;
+			// aapt resource value: 0x7f06009b
+			public const int line3 = 2131099803;
 			
 			// aapt resource value: 0x7f06000c
 			public const int listMode = 2131099660;
@@ -2225,14 +2229,14 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060042
 			public const int list_item = 2131099714;
 			
-			// aapt resource value: 0x7f06007b
-			public const int logged_as = 2131099771;
-			
 			// aapt resource value: 0x7f06007c
-			public const int logged_as_email = 2131099772;
+			public const int logged_as = 2131099772;
 			
-			// aapt resource value: 0x7f060094
-			public const int media_actions = 2131099796;
+			// aapt resource value: 0x7f06007d
+			public const int logged_as_email = 2131099773;
+			
+			// aapt resource value: 0x7f060095
+			public const int media_actions = 2131099797;
 			
 			// aapt resource value: 0x7f06001e
 			public const int middle = 2131099678;
@@ -2243,23 +2247,23 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060017
 			public const int multiply = 2131099671;
 			
-			// aapt resource value: 0x7f06008a
-			public const int nav_frame_header = 2131099786;
+			// aapt resource value: 0x7f06008b
+			public const int nav_frame_header = 2131099787;
 			
-			// aapt resource value: 0x7f06008e
-			public const int nav_frame_header_logged_in = 2131099790;
+			// aapt resource value: 0x7f06008f
+			public const int nav_frame_header_logged_in = 2131099791;
 			
-			// aapt resource value: 0x7f060090
-			public const int nav_header_email_logged_in = 2131099792;
+			// aapt resource value: 0x7f060091
+			public const int nav_header_email_logged_in = 2131099793;
+			
+			// aapt resource value: 0x7f06008d
+			public const int nav_header_text_view = 2131099789;
 			
 			// aapt resource value: 0x7f06008c
-			public const int nav_header_text_view = 2131099788;
+			public const int nav_linear_header = 2131099788;
 			
-			// aapt resource value: 0x7f06008b
-			public const int nav_linear_header = 2131099787;
-			
-			// aapt resource value: 0x7f060089
-			public const int nav_view = 2131099785;
+			// aapt resource value: 0x7f06008a
+			public const int nav_view = 2131099786;
 			
 			// aapt resource value: 0x7f060072
 			public const int navigation_header_container = 2131099762;
@@ -2273,8 +2277,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06000d
 			public const int normal = 2131099661;
 			
-			// aapt resource value: 0x7f060083
-			public const int open_gate_btn = 2131099779;
+			// aapt resource value: 0x7f060084
+			public const int open_gate_btn = 2131099780;
 			
 			// aapt resource value: 0x7f060029
 			public const int parallax = 2131099689;
@@ -2285,6 +2289,9 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06002a
 			public const int pin = 2131099690;
 			
+			// aapt resource value: 0x7f06007b
+			public const int progress_bar = 2131099771;
+			
 			// aapt resource value: 0x7f060006
 			public const int progress_circular = 2131099654;
 			
@@ -2294,17 +2301,17 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060055
 			public const int radio = 2131099733;
 			
-			// aapt resource value: 0x7f0600a0
-			public const int recovery_desc_textview_first = 2131099808;
-			
 			// aapt resource value: 0x7f0600a1
-			public const int recovery_desc_textview_second = 2131099809;
+			public const int recovery_desc_textview_first = 2131099809;
 			
-			// aapt resource value: 0x7f06009f
-			public const int recovery_header_textview = 2131099807;
+			// aapt resource value: 0x7f0600a2
+			public const int recovery_desc_textview_second = 2131099810;
 			
-			// aapt resource value: 0x7f06007e
-			public const int refresh_text = 2131099774;
+			// aapt resource value: 0x7f0600a0
+			public const int recovery_header_textview = 2131099808;
+			
+			// aapt resource value: 0x7f06007f
+			public const int refresh_text = 2131099775;
 			
 			// aapt resource value: 0x7f060031
 			public const int right = 2131099697;
@@ -2360,14 +2367,14 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060069
 			public const int select_dialog_listview = 2131099753;
 			
-			// aapt resource value: 0x7f0600a7
-			public const int settings_desc_textview_first = 2131099815;
-			
 			// aapt resource value: 0x7f0600a8
-			public const int settings_desc_textview_second = 2131099816;
+			public const int settings_desc_textview_first = 2131099816;
 			
-			// aapt resource value: 0x7f0600a6
-			public const int settings_header_textview = 2131099814;
+			// aapt resource value: 0x7f0600a9
+			public const int settings_desc_textview_second = 2131099817;
+			
+			// aapt resource value: 0x7f0600a7
+			public const int settings_header_textview = 2131099815;
 			
 			// aapt resource value: 0x7f060054
 			public const int shortcut = 2131099732;
@@ -2408,8 +2415,8 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f060032
 			public const int start = 2131099698;
 			
-			// aapt resource value: 0x7f060093
-			public const int status_bar_latest_event_content = 2131099795;
+			// aapt resource value: 0x7f060094
+			public const int status_bar_latest_event_content = 2131099796;
 			
 			// aapt resource value: 0x7f060066
 			public const int submit_area = 2131099750;
@@ -2417,17 +2424,17 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06000e
 			public const int tabMode = 2131099662;
 			
-			// aapt resource value: 0x7f06009b
-			public const int text = 2131099803;
+			// aapt resource value: 0x7f06009c
+			public const int text = 2131099804;
 			
-			// aapt resource value: 0x7f060099
-			public const int text2 = 2131099801;
+			// aapt resource value: 0x7f06009a
+			public const int text2 = 2131099802;
 			
 			// aapt resource value: 0x7f06004e
 			public const int textSpacerNoButtons = 2131099726;
 			
-			// aapt resource value: 0x7f060097
-			public const int time = 2131099799;
+			// aapt resource value: 0x7f060098
+			public const int time = 2131099800;
 			
 			// aapt resource value: 0x7f060044
 			public const int title = 2131099716;
@@ -2447,11 +2454,11 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f06006e
 			public const int touch_outside = 2131099758;
 			
-			// aapt resource value: 0x7f060085
-			public const int txtInputLayoutText = 2131099781;
-			
 			// aapt resource value: 0x7f060086
-			public const int txtPassword = 2131099782;
+			public const int txtInputEmail = 2131099782;
+			
+			// aapt resource value: 0x7f060087
+			public const int txtPassword = 2131099783;
 			
 			// aapt resource value: 0x7f060009
 			public const int up = 2131099657;
@@ -2724,8 +2731,8 @@ namespace SmartParkAndroid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f070017
-			public const int ApplicationName = 2131165207;
+			// aapt resource value: 0x7f070018
+			public const int ApplicationName = 2131165208;
 			
 			// aapt resource value: 0x7f070000
 			public const int abc_action_bar_home_description = 2131165184;
@@ -2784,14 +2791,14 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f070012
 			public const int abc_toolbar_collapse_description = 2131165202;
 			
-			// aapt resource value: 0x7f07001b
-			public const int about_desc_first = 2131165211;
-			
 			// aapt resource value: 0x7f07001c
-			public const int about_desc_second = 2131165212;
+			public const int about_desc_first = 2131165212;
 			
-			// aapt resource value: 0x7f07001a
-			public const int about_header = 2131165210;
+			// aapt resource value: 0x7f07001d
+			public const int about_desc_second = 2131165213;
+			
+			// aapt resource value: 0x7f07001b
+			public const int about_header = 2131165211;
 			
 			// aapt resource value: 0x7f070014
 			public const int appbar_scrolling_view_behavior = 2131165204;
@@ -2802,32 +2809,35 @@ namespace SmartParkAndroid
 			// aapt resource value: 0x7f070016
 			public const int character_counter_pattern = 2131165206;
 			
-			// aapt resource value: 0x7f07001d
-			public const int nav_header_not_logged_in_text = 2131165213;
-			
-			// aapt resource value: 0x7f070018
-			public const int open_gate_text = 2131165208;
-			
-			// aapt resource value: 0x7f070019
-			public const int open_gate_text_stop = 2131165209;
-			
-			// aapt resource value: 0x7f07001f
-			public const int recovery_desc_first = 2131165215;
-			
-			// aapt resource value: 0x7f070020
-			public const int recovery_desc_second = 2131165216;
+			// aapt resource value: 0x7f070017
+			public const int library_name = 2131165207;
 			
 			// aapt resource value: 0x7f07001e
-			public const int recovery_header = 2131165214;
+			public const int nav_header_not_logged_in_text = 2131165214;
 			
-			// aapt resource value: 0x7f070022
-			public const int settings_desc_first = 2131165218;
+			// aapt resource value: 0x7f070019
+			public const int open_gate_text = 2131165209;
 			
-			// aapt resource value: 0x7f070023
-			public const int settings_desc_second = 2131165219;
+			// aapt resource value: 0x7f07001a
+			public const int open_gate_text_stop = 2131165210;
+			
+			// aapt resource value: 0x7f070020
+			public const int recovery_desc_first = 2131165216;
 			
 			// aapt resource value: 0x7f070021
-			public const int settings_header = 2131165217;
+			public const int recovery_desc_second = 2131165217;
+			
+			// aapt resource value: 0x7f07001f
+			public const int recovery_header = 2131165215;
+			
+			// aapt resource value: 0x7f070023
+			public const int settings_desc_first = 2131165219;
+			
+			// aapt resource value: 0x7f070024
+			public const int settings_desc_second = 2131165220;
+			
+			// aapt resource value: 0x7f070022
+			public const int settings_header = 2131165218;
 			
 			// aapt resource value: 0x7f070013
 			public const int status_bar_notification_info_overflow = 2131165203;

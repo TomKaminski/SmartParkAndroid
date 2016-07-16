@@ -1,4 +1,8 @@
+using System;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
@@ -9,18 +13,20 @@ using Android.Widget;
 using Java.Lang;
 using SmartParkAndroid.Core;
 using SmartParkAndroid.Core.Helpers;
+using SmartParkAndroid.Models;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
 {
     public class LoggedInFragment : SupportFragment
     {
-        const int secondsToElapse = 5;
         static bool isDelayedForTwoSeconds = false;
 
         private static Button gateButton;
         private Handler _handler = new Handler();
         private CustomViewPager _viewPager;
+
+        private bool _chargesRefreshing = false;
 
         private Runnable _longPressedRunnable = new Runnable(LongRunnableFunction);
 
@@ -71,7 +77,7 @@ namespace SmartParkAndroid.Fragments
         {
             if (v.Background is TransitionDrawable)
             {
-                var d = (TransitionDrawable) v.Background;
+                var d = (TransitionDrawable)v.Background;
                 d.StartTransition(millis);
             }
         }
@@ -95,7 +101,7 @@ namespace SmartParkAndroid.Fragments
                     _viewPager.SetSwipePagingEnabled(false);
                     _handler.PostDelayed(_longPressedRunnable, 2000);
                     break;
-                
+
                 case MotionEventActions.Up:
                     _viewPager.SetSwipePagingEnabled(true);
                     _handler.RemoveCallbacks(_longPressedRunnable);
@@ -111,8 +117,6 @@ namespace SmartParkAndroid.Fragments
 
                     break;
             }
-
-
         }
 
         private void SetChargesColor(View view)
@@ -128,23 +132,107 @@ namespace SmartParkAndroid.Fragments
             }
         }
 
-
-
-        private void OnClickRefreshCharges(object sender, System.EventArgs e, View view)
+        private async void OnClickRefreshCharges(object sender, System.EventArgs e, View view)
         {
-            StaticManager.Charges = 50;
-            view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
-            SnackbarHelper.ShowSnackbar("Wyjazdy zosta³y odœwie¿one", view, false, true);
+            if (!_chargesRefreshing)
+            {
+                _chargesRefreshing = true;
+                Activity.RunOnUiThread(() =>
+                {
+                    (Activity as MainActivity).ShowProgressBar();
+                });
+                var smartHttpClient = new SmartParkHttpClient();
+                await smartHttpClient.Post<SmartJsonResult<int?>, object>(new Uri("https://smartparkath.azurewebsites.net/api/Parking/RefreshCharges", UriKind.Absolute),
+                    new
+                    {
+                        Email = StaticManager.UserName,
+                    }, response =>
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            _chargesRefreshing = false;
+                            (Activity as MainActivity).HideProgressBar();
+                            if (response.IsValid)
+                            {
+                                StaticManager.Charges = response.Result.Value;
+                                var mainActiviy = (MainActivity)Activity;
+                                var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
+                                var editor = prefs.Edit();
+                                editor.PutInt("charges", response.Result.Value);
+                                editor.Commit();
+
+                                view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
+                                SnackbarHelper.ShowSnackbar("Wyjazdy zosta³y odœwie¿one", view, false, true);
+                            }
+                            else
+                            {
+                                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                            }
+                        });
+                        return true;
+                    }, null, response =>
+                    {
+                        _chargesRefreshing = false;
+
+                        Activity.RunOnUiThread(() =>
+                        {
+                            (Activity as MainActivity).HideProgressBar();
+                            SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                        });
+                        return true;
+                    });
+            }
         }
 
-
-
-        private void OnClickOpenGate(Button button, View view)
+        private async void OnClickOpenGate(Button button, View view)
         {
-
             if (StaticManager.Charges > 0)
             {
-                StaticManager.Charges--;
+                Activity.RunOnUiThread(() =>
+                {
+                    (Activity as MainActivity).ShowProgressBar();
+                });
+                var smartHttpClient = new SmartParkHttpClient();
+                await smartHttpClient.Post<SmartJsonResult<int>, object>(new Uri("https://smartparkath.azurewebsites.net/api/Parking/OpenGate", UriKind.Absolute),
+                    new
+                    {
+                        Email = StaticManager.UserName,
+                    }, response =>
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            (Activity as MainActivity).HideProgressBar();
+                            OpenGateAfter(response, view, button);
+                        });
+                        return true;
+                    }, null, response =>
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            (Activity as MainActivity).HideProgressBar();
+                            SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                        });
+                        return true;
+                    });
+            }
+            else
+            {
+                SnackbarHelper.ShowSnackbar("Brak wyjazdów, spróbuj odœwie¿yæ liczbê wyjazdów.", view, true, true);
+            }
+        }
+
+        private void OpenGateAfter(SmartJsonResult<int> response, View view, Button button)
+        {
+            if (response.IsValid)
+            {
+                StaticManager.Charges = response.Result;
+                var mainActiviy = (MainActivity)Activity;
+
+                var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
+                var editor = prefs.Edit();
+                editor.PutInt("charges", response.Result);
+                editor.Commit();
+
                 view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
 
                 button.Enabled = false;
@@ -175,7 +263,13 @@ namespace SmartParkAndroid.Fragments
             }
             else
             {
-                SnackbarHelper.ShowSnackbar("Brak wyjazdów, spróbuj odœwie¿yæ liczbê wyjazdów.", view, true, true);
+                Activity.RunOnUiThread(() =>
+                {
+                    button.Enabled = true;
+                    button.Text = Resources.GetString(Resource.String.open_gate_text);
+                });
+                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, false, true);
+                SetChargesColor(view);
             }
         }
     }
