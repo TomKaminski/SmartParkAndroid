@@ -16,7 +16,7 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="5dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:textColor="#FF000000"
             android:textStyle="bold"
             android:gravity="center"
-            fontPath="fonts/titil_bold.ttf"/>
+            fontPath="fonts/titil_bold.ttf" />
         <TextView
             android:text="@string/settings_desc_first"
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             android:textColor="#FF000000"
-            android:gravity="center"/>
+            android:gravity="center" />
         <TextView
             android:text="@string/settings_desc_second"
             android:layout_width="match_parent"
@@ -53,19 +53,19 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="30dp"
             android:textColor="#FF000000"
-            android:gravity="center" 
-            fontPath="fonts/titil_italic.ttf"/>
-      <Button
-           android:id="@+id/btnSettins"
-           android:layout_marginTop="10dp"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:text="Przejdź do ustawień"
-           android:layout_marginLeft="10dp"
-           android:layout_marginRight="10dp"
-           android:background="@color/main_blue"
-           android:textColor="#FFFFFF"
-           android:textSize="18dp"
-           fontPath="fonts/titil_bold.ttf"/>
+            android:gravity="center"
+            fontPath="fonts/titil_italic.ttf" />
+        <Button
+            android:id="@+id/btnSettins"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Przejdź do ustawień"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/main_blue"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            fontPath="fonts/titil_bold.ttf" />
     </LinearLayout>
 </FrameLayout>

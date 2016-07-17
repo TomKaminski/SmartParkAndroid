@@ -38,6 +38,6 @@
         android:indeterminate="true"
         android:layout_gravity="bottom"
         android:layout_marginBottom="-6dp"
-        android:id="@+id/progress_bar" 
-        android:visibility="invisible"/>
+        android:id="@+id/progress_bar"
+        android:visibility="invisible" />
 </android.support.design.widget.CoordinatorLayout>

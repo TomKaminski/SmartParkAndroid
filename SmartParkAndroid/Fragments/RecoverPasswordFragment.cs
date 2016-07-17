@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Mail;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
@@ -25,13 +26,13 @@ namespace SmartParkAndroid.Fragments
             View view = inflater.Inflate(Resource.Layout.recover_password_fragment, container, false);
             var btnRecover = view.FindViewById<Button>(Resource.Id.btn_recover_password);
 
-            var emailInput = view.FindViewById<EditText>(Resource.Id.input_recovery_password_email);
-            emailInput.AfterTextChanged += EmailInput_AfterTextChanged;
+            var emailInput = view.FindViewById<TextInputLayout>(Resource.Id.input_recovery_password);
+            emailInput.EditText.AfterTextChanged += (sender, e) => EmailInput_AfterTextChanged(sender, e, emailInput);
 
 
             btnRecover.Click += async (o, e) =>
             {
-                if (EmailValidateFunc(emailInput))
+                if (InputErrorHelper.EmailValidateFunc(emailInput))
                 {
                     btnRecover.Enabled = false;
 
@@ -39,7 +40,7 @@ namespace SmartParkAndroid.Fragments
                     {
                         (Activity as MainActivity).ShowProgressBar();
                     });
-                    var txtEmail = emailInput.Text;
+                    var txtEmail = emailInput.EditText.Text;
                     var smartHttpClient = new SmartParkHttpClient();
                     await smartHttpClient.Post<SmartJsonResult<bool>, object>(new Uri("https://smartparkath.azurewebsites.net/api/Account/Forgot", UriKind.Absolute),
                         new
@@ -80,28 +81,11 @@ namespace SmartParkAndroid.Fragments
             return view;
         }
 
-        private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
+        private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e, TextInputLayout wrapper)
         {
-            EmailValidateFunc((TextView)sender);
+            InputErrorHelper.EmailValidateFunc(wrapper);
         }
 
-        private bool EmailValidateFunc(TextView textView)
-        {
-            if (string.IsNullOrEmpty(textView.Text))
-            {
-                textView.Error = "Adres email jest wymagany";
-                return false;
-            }
-            try
-            {
-                var m = new MailAddress(textView.Text);
-                return true;
-            }
-            catch (FormatException)
-            {
-                textView.Error = "Podany adres email jest niepoprawny";
-                return false;
-            }
-        }
+       
     }
 }

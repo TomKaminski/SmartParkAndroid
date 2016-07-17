@@ -96,6 +96,7 @@
     <Compile Include="Core\EditTextPassword.cs" />
     <Compile Include="Core\Helpers\SnackbarHelper.cs" />
     <Compile Include="Core\Helpers\TimerActionHelper.cs" />
+    <Compile Include="Core\InputErrorHelper.cs" />
     <Compile Include="Core\MenuItemsProvider.cs" />
     <Compile Include="Core\SmartJsonResult.cs" />
     <Compile Include="Core\SmartParkHttpClient.cs" />

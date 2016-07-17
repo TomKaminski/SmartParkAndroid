@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using Android.Content;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
@@ -28,23 +29,24 @@ namespace SmartParkAndroid.Fragments
             var view = inflater.Inflate(Resource.Layout.login_fragment, container, false);
 
             var btnLogin = view.FindViewById<Button>(Resource.Id.btnLogin);
-            var passwordInput = view.FindViewById<EditTextPassword>(Resource.Id.txtPassword);
-            var emailInput = view.FindViewById<EditText>(Resource.Id.txtInputEmail);
+            var passwordInput = view.FindViewById<TextInputLayout>(Resource.Id.txtInputPassword_layout);
+            var emailInput = view.FindViewById<TextInputLayout>(Resource.Id.txtInputEmail_layout);
 
-            emailInput.AfterTextChanged += EmailInput_AfterTextChanged;
-            passwordInput.AfterTextChanged += PasswordInput_AfterTextChanged;
+            emailInput.EditText.AfterTextChanged += (sender, e) => EmailInput_AfterTextChanged(sender, e, emailInput);
+
+            passwordInput.EditText.AfterTextChanged += (sender, e) => PasswordInput_AfterTextChanged(sender, e, passwordInput);
 
             btnLogin.Click += async (o, e) =>
             {
-                if (EmailValidateFunc(emailInput) && PasswordValidationFunc(passwordInput))
+                if (InputErrorHelper.EmailValidateFunc(emailInput) && InputErrorHelper.PasswordValidationFunc(passwordInput))
                 {
                     btnLogin.Enabled = false;
                     Activity.RunOnUiThread(() =>
                     {
                         (Activity as MainActivity).ShowProgressBar();
                     });
-                    var txtPassword = passwordInput.Text;
-                    var txtEmail = emailInput.Text;
+                    var txtPassword = passwordInput.EditText.Text;
+                    var txtEmail = emailInput.EditText.Text;
                     var smartHttpClient = new SmartParkHttpClient();
                     await smartHttpClient.Post<SmartJsonResult<User>, object>(new Uri("https://smartparkath.azurewebsites.net/api/Account/Login", UriKind.Absolute),
                         new
@@ -75,44 +77,19 @@ namespace SmartParkAndroid.Fragments
             return view;
         }
 
-        private void PasswordInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
+        private void PasswordInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e, TextInputLayout wrapper)
         {
-            PasswordValidationFunc((TextView)sender);
+            InputErrorHelper.PasswordValidationFunc(wrapper);
         }
 
-        private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
+        private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e, TextInputLayout wrapper)
         {
-            EmailValidateFunc((TextView) sender);
+            InputErrorHelper.EmailValidateFunc(wrapper);
         }
 
-        private bool EmailValidateFunc(TextView textView)
-        {
-            if (string.IsNullOrEmpty(textView.Text))
-            {
-                textView.Error = "Adres email jest wymagany";
-                return false;
-            }
-            try
-            {
-                var m = new MailAddress(textView.Text);
-                return true;
-            }
-            catch (FormatException)
-            {
-                textView.Error = "Podany adres email jest niepoprawny";
-                return false;
-            }
-        }
+      
 
-        private bool PasswordValidationFunc(TextView textView)
-        {
-            if (string.IsNullOrEmpty(textView.Text))
-            {
-                textView.Error = "Has³o jest wymagane";
-                return false;
-            }
-            return true;
-        }
+       
 
         private void LogIn(SmartJsonResult<User> model, View view)
         {
