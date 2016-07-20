@@ -1,9 +1,6 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Android.Content;
-using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
@@ -13,29 +10,28 @@ using Android.Widget;
 using Java.Lang;
 using SmartParkAndroid.Core;
 using SmartParkAndroid.Core.Helpers;
-using SmartParkAndroid.Models;
 using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
 {
     public class LoggedInFragment : SupportFragment
     {
-        static bool isDelayedForTwoSeconds = false;
+        static bool _isDelayedForTwoSeconds;
 
-        private static Button gateButton;
-        private Handler _handler = new Handler();
+        private static Button _gateButton;
+        private readonly Handler _handler = new Handler();
         private CustomViewPager _viewPager;
 
-        private bool _chargesRefreshing = false;
+        private bool _chargesRefreshing;
 
-        private Runnable _longPressedRunnable = new Runnable(LongRunnableFunction);
+        private readonly Runnable _longPressedRunnable = new Runnable(LongRunnableFunction);
 
         public static void LongRunnableFunction()
         {
-            StartTransition(500, gateButton);
-            gateButton.SetTextColor(Color.White);
-            gateButton.Text = "Zwolnij przycisk";
-            isDelayedForTwoSeconds = true;
+            StartTransition(500, _gateButton);
+            _gateButton.SetTextColor(Color.White);
+            _gateButton.Text = "Zwolnij przycisk";
+            _isDelayedForTwoSeconds = true;
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -59,8 +55,8 @@ namespace SmartParkAndroid.Fragments
 
             SetChargesColor(view);
 
-            gateButton = view.FindViewById<Button>(Resource.Id.open_gate_btn);
-            gateButton.Touch += (sender, e) =>
+            _gateButton = view.FindViewById<Button>(Resource.Id.open_gate_btn);
+            _gateButton.Touch += (sender, e) =>
             {
                 BtnOpenGate_Touch(sender, e, view);
             };
@@ -106,13 +102,12 @@ namespace SmartParkAndroid.Fragments
                     _viewPager.SetSwipePagingEnabled(true);
                     _handler.RemoveCallbacks(_longPressedRunnable);
                     button.SetTextColor(Resources.GetColor(Resource.Color.main_blue));
-                    button.Text = "Chwileczkê...";
 
-                    if (isDelayedForTwoSeconds)
+                    if (_isDelayedForTwoSeconds)
                     {
-                        ReverseTransition(500, gateButton);
+                        ReverseTransition(500, _gateButton);
                         OnClickOpenGate(button, view);
-                        isDelayedForTwoSeconds = false;
+                        _isDelayedForTwoSeconds = false;
                     }
 
                     break;
@@ -162,11 +157,11 @@ namespace SmartParkAndroid.Fragments
                                 editor.Commit();
 
                                 view.FindViewById<TextView>(Resource.Id.charges_num).Text = StaticManager.Charges.ToString();
-                                SnackbarHelper.ShowSnackbar("Wyjazdy zosta³y odœwie¿one", view, false, true);
+                                SnackbarHelper.Success("Wyjazdy zosta³y odœwie¿one", view);
                             }
                             else
                             {
-                                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                                SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                             }
                         });
                         return true;
@@ -177,7 +172,7 @@ namespace SmartParkAndroid.Fragments
                         Activity.RunOnUiThread(() =>
                         {
                             (Activity as MainActivity).HideProgressBar();
-                            SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                            SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                         });
                         return true;
                     });
@@ -188,6 +183,7 @@ namespace SmartParkAndroid.Fragments
         {
             if (StaticManager.Charges > 0)
             {
+                button.Text = "Chwileczkê...";
                 Activity.RunOnUiThread(() =>
                 {
                     button.Enabled = false;
@@ -211,14 +207,14 @@ namespace SmartParkAndroid.Fragments
                         Activity.RunOnUiThread(() =>
                         {
                             (Activity as MainActivity).HideProgressBar();
-                            SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                            SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                         });
                         return true;
                     });
             }
             else
             {
-                SnackbarHelper.ShowSnackbar("Brak wyjazdów, spróbuj odœwie¿yæ liczbê wyjazdów.", view, true, true);
+                SnackbarHelper.Error("Brak wyjazdów, spróbuj odœwie¿yæ liczbê wyjazdów.", view);
             }
         }
 
@@ -256,7 +252,7 @@ namespace SmartParkAndroid.Fragments
                     });
                     return true;
                 }, toElapse);
-                SnackbarHelper.ShowSnackbar("Brama otwierana, mi³ego dnia!", view, false, true);
+                SnackbarHelper.Success("Brama otwierana, mi³ego dnia!", view);
                 SetChargesColor(view);
             }
             else
@@ -266,7 +262,7 @@ namespace SmartParkAndroid.Fragments
                     button.Enabled = true;
                     button.Text = Resources.GetString(Resource.String.open_gate_text);
                 });
-                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, false, true);
+                SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                 SetChargesColor(view);
             }
         }

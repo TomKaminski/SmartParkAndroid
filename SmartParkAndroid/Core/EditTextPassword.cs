@@ -8,7 +8,6 @@ using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
 using Android.Views;
-using Android.Views.InputMethods;
 
 namespace SmartParkAndroid.Core
 {

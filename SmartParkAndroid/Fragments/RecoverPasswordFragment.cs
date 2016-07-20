@@ -55,12 +55,12 @@ namespace SmartParkAndroid.Fragments
                                 (Activity as MainActivity).HideProgressBar();
                                 if (response.IsValid)
                                 {
-                                    SnackbarHelper.ShowSnackbar("Na podany adres email zosta³y wys³ane kolejne instrukcje przywrócenia has³a.", view, false, true);
+                                    SnackbarHelper.Success("Na podany adres email zosta³y wys³ane kolejne instrukcje przywrócenia has³a.", view);
 
                                 }
                                 else
                                 {
-                                    SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                                    SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                                 }
                             });
                             return true;
@@ -71,7 +71,7 @@ namespace SmartParkAndroid.Fragments
                             Activity.RunOnUiThread(() =>
                             {
                                 (Activity as MainActivity).HideProgressBar();
-                                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                                SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                             });
                             return true;
                         });
@@ -85,7 +85,5 @@ namespace SmartParkAndroid.Fragments
         {
             InputErrorHelper.EmailValidateFunc(wrapper);
         }
-
-       
     }
 }

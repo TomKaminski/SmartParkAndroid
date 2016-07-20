@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="BaseActivity.cs" />
     <Compile Include="Core\CircularImageView.cs" />
     <Compile Include="Core\CustomViewPager.cs" />
     <Compile Include="Core\EditTextPassword.cs" />
@@ -180,9 +181,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_discuss.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_done.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_event.png" />
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +196,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_discuss.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_done.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_event.png" />
   </ItemGroup>
   <ItemGroup>
@@ -213,9 +208,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_menu.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_done.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu.png" />
   </ItemGroup>
   <ItemGroup>
@@ -223,9 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_discuss.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_done.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_event.png" />
@@ -246,9 +235,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_discuss.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_done.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_event.png" />
   </ItemGroup>
   <ItemGroup>
@@ -259,9 +245,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_menu.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\cover.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\right_action_menu.xml">

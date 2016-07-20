@@ -68,7 +68,7 @@ namespace SmartParkAndroid.Fragments
                             {
                                 btnLogin.Enabled = true;
                                 (Activity as MainActivity).HideProgressBar();
-                                SnackbarHelper.ShowSnackbar(response.ValidationErrors.FirstOrDefault(), view, true, true);
+                                SnackbarHelper.Error(response.ValidationErrors.FirstOrDefault(), view);
                             });
                             return true;
                         });
@@ -87,35 +87,31 @@ namespace SmartParkAndroid.Fragments
             InputErrorHelper.EmailValidateFunc(wrapper);
         }
 
-      
-
-       
-
         private void LogIn(SmartJsonResult<User> model, View view)
         {
             if (model.IsValid)
             {
+                var result = model.Result;
+
                 var mainActiviy = (MainActivity)Activity;
                 StaticManager.LoggedIn = true;
 
                 var prefs = mainActiviy.GetPreferences(FileCreationMode.Private);
                 var editor = prefs.Edit();
-                editor.PutString("username", model.Result.Email);
-                editor.PutString("userhash", model.Result.PasswordHash);
-                editor.PutString("imageid", model.Result.ImageId);
-                editor.PutInt("charges", model.Result.Charges);
+                editor.PutString("username", result.Email);
+                editor.PutString("userhash", result.PasswordHash);
+                editor.PutString("imageid", result.ImageId);
+                editor.PutInt("charges", result.Charges);
+
                 editor.Commit();
 
-                StaticManager.UserName = model.Result.Email;
-                StaticManager.UserHash = model.Result.PasswordHash;
-                StaticManager.Charges = model.Result.Charges;
-                StaticManager.ImageId = model.Result.ImageId;
+                StaticManager.InitBase(true, result.Email, result.PasswordHash, result.Charges, result.ImageId);
 
                 mainActiviy.LogIn();
             }
             else
             {
-                SnackbarHelper.ShowSnackbar(model.ValidationErrors.FirstOrDefault(), view, true, true);
+                SnackbarHelper.Error(model.ValidationErrors.FirstOrDefault(), view);
             }
 
         }

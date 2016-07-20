@@ -7,46 +7,36 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
-using Android.Support.V7.App;
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using SmartParkAndroid.Core;
 using SmartParkAndroid.Fragments;
-using UK.CO.Chrisjenx.Calligraphy;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
 
 namespace SmartParkAndroid
 {
     [Activity(Label = "SmartParkAndroid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/SmartParkTheme")]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : BaseActivity
     {
         private DrawerLayout _drawerLayout;
         private CustomViewPager _viewPager;
 
         protected override void OnCreate(Bundle bundle)
         {
-            
-            RequestedOrientation = ScreenOrientation.Portrait;
-
             base.OnCreate(bundle);
+            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+
+            SetActivityScreenOrientation(ScreenOrientation.Portrait);
 
             InitUserContext();
 
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var toolbar = FindViewById<SupportToolbar>(Resource.Id.toolBar);
-            SetSupportActionBar(toolbar);
-
-            var ab = SupportActionBar;
-            ab.SetHomeAsUpIndicator(Resource.Drawable.ic_menu);
-            ab.SetDisplayHomeAsUpEnabled(true);
-            ab.Title = "Home";
-
-            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+            SetSupportActionBar(FindViewById<SupportToolbar>(Resource.Id.toolBar));
+            InitSupportActionBar();
 
             var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
             if (navigationView != null)
@@ -58,9 +48,8 @@ namespace SmartParkAndroid
                 }
                 else
                 {
-                    SetUpNavHeaderContent(navigationView);
+                    SetUpNavHeaderNotLoggedInContent(navigationView);
                 }
-
             }
 
             _viewPager = FindViewById<CustomViewPager>(Resource.Id.viewpager);
@@ -72,21 +61,15 @@ namespace SmartParkAndroid
             fab.Click += OnClickNavHeaderBtn;
         }
 
-        protected override void AttachBaseContext(Context @base)
+        private void InitSupportActionBar()
         {
-            base.AttachBaseContext(CalligraphyContextWrapper.Wrap(@base));
+            var ab = SupportActionBar;
+            ab.SetHomeAsUpIndicator(Resource.Drawable.ic_menu);
+            ab.SetDisplayHomeAsUpEnabled(true);
+            SetSupportActionBarTitle("Home");
         }
 
-        private void RemoveNavHeaders(NavigationView view)
-        {
-            var headersInNav = view.HeaderCount;
-            for (int i = 0; i < headersInNav; i++)
-            {
-                view.RemoveHeaderView(view.GetHeaderView(i));
-            }
-        }
-
-        private void SetUpNavHeaderContent(NavigationView view)
+        private void SetUpNavHeaderNotLoggedInContent(NavigationView view)
         {
             RemoveNavHeaders(view);
             view.InflateHeaderView(Resource.Layout.nav_header);
@@ -96,7 +79,7 @@ namespace SmartParkAndroid
             sb.SetSpan(boldSpan, 0, 11, SpanTypes.InclusiveInclusive);
             var normalSpan = new StyleSpan(TypefaceStyle.Normal);
             sb.SetSpan(normalSpan, 12, Resources.GetString(Resource.String.nav_header_not_logged_in_text).Length - 1, SpanTypes.InclusiveInclusive);
-            
+
             var navHeaderView = view.GetHeaderView(0);
             var navHeaderTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_text_view);
 
@@ -113,9 +96,9 @@ namespace SmartParkAndroid
             emailTextView.Text = StaticManager.UserName;
 
             var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
-            circleImgView.SetImageURL(string.Format("http://smartparkath.azurewebsites.net/images/user-avatars/{0}", imageId));
+            circleImgView.SetImageURL($"http://smartparkath.azurewebsites.net/images/user-avatars/{imageId}");
         }
-        
+
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
         {
             var uri = Uri.Parse("http://smartparkath.azurewebsites.net/Portal");
@@ -160,17 +143,19 @@ namespace SmartParkAndroid
             var menuItemList = StaticManager.LoggedIn
                 ? Resources.GetStringArray(Resource.Array.logged_in_menu_string)
                 : Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
+
             MenuItemsProvider.UncheckItems(navView.Menu);
-            navView.Menu.GetItem(ev.Position).SetChecked(true);
-            SupportActionBar.Title = menuItemList[ev.Position];
+            SetSideMenuItemChecked(navView, ev.Position);
+            SetSupportActionBarTitle(menuItemList[ev.Position]);
         }
 
         public void LogIn()
         {
             var navView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
-            navView.Menu.GetItem(0).SetChecked(true);
+            SetSideMenuItemChecked(navView, 0);
             SetUpNavHeaderLoggedInContent(navView, StaticManager.ImageId);
 
         }
@@ -178,24 +163,26 @@ namespace SmartParkAndroid
         public void Logout()
         {
             LogoutUser();
+
             var navView = FindViewById<NavigationView>(Resource.Id.nav_view);
+
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetNotLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.not_logged_in_menu_string));
-            navView.Menu.GetItem(0).SetChecked(true);
-            SetUpNavHeaderContent(navView);
-
+            SetSideMenuItemChecked(navView, 0);
+            SetUpNavHeaderNotLoggedInContent(navView);
         }
 
         private void LogoutUser()
         {
-            StaticManager.LoggedIn = false;
-            StaticManager.UserHash = null;
-            StaticManager.UserName = null;
+            StaticManager.InitBase(false, null, null, 0, null);
 
             var preferences = GetPreferences(FileCreationMode.Private);
             var prefEditor = preferences.Edit();
             prefEditor.Remove("username");
             prefEditor.Remove("userhash");
+            prefEditor.Remove("charges");
+            prefEditor.Remove("imageid");
+
             prefEditor.Commit();
         }
 
@@ -225,14 +212,7 @@ namespace SmartParkAndroid
             var userCharges = preferences.GetInt("charges", 0);
             var imageId = preferences.GetString("imageid", "avatar-placeholder.jpg");
 
-            if (username != null && userHash != null)
-            {
-                StaticManager.InitBase(true, username, userHash, userCharges,imageId);
-            }
-            else
-            {
-                StaticManager.InitBase(false, username, userHash, userCharges, imageId);
-            }
+            StaticManager.InitBase(username != null && userHash != null, username, userHash, userCharges, imageId);
         }
 
         private void SetUpDrawerContent(NavigationView navigationView)
@@ -247,7 +227,7 @@ namespace SmartParkAndroid
             }
 
             MenuItemsProvider.UncheckItems(navigationView.Menu);
-            navigationView.Menu.GetItem(0).SetChecked(true);
+            SetSideMenuItemChecked(navigationView, 0);
 
             navigationView.NavigationItemSelected += (sender, e) =>
             {
@@ -282,24 +262,26 @@ namespace SmartParkAndroid
                             break;
                         }
                 }
+
                 var menuItemList = StaticManager.LoggedIn
                     ? Resources.GetStringArray(Resource.Array.logged_in_menu_string)
                     : Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
 
-                SupportActionBar.Title = menuItemList[drawerPositon];
+                SetSupportActionBarTitle(menuItemList[drawerPositon]);
                 _viewPager.SetCurrentItem(drawerPositon, false);
                 _drawerLayout.CloseDrawers();
             };
         }
 
-        public void ShowProgressBar()
+        private void SetSideMenuItemChecked(NavigationView view, int itemNumber)
         {
-            FindViewById<ProgressBar>(Resource.Id.progress_bar).Visibility = ViewStates.Visible;
+            view.Menu.GetItem(itemNumber).SetChecked(true);
         }
 
-        public void HideProgressBar()
+        private void SetSupportActionBarTitle(string title)
         {
-            FindViewById<ProgressBar>(Resource.Id.progress_bar).Visibility = ViewStates.Invisible;
+            SupportActionBar.Title = title;
+
         }
     }
 }
