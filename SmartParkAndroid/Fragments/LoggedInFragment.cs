@@ -16,7 +16,7 @@ namespace SmartParkAndroid.Fragments
 {
     public class LoggedInFragment : SupportFragment
     {
-        static bool _isDelayedForTwoSeconds;
+        static bool _isDelayedForOneSecond;
 
         private static Button _gateButton;
         private readonly Handler _handler = new Handler();
@@ -28,10 +28,10 @@ namespace SmartParkAndroid.Fragments
 
         public static void LongRunnableFunction()
         {
-            StartTransition(500, _gateButton);
+            StartTransition(350, _gateButton);
             _gateButton.SetTextColor(Color.White);
             _gateButton.Text = "Zwolnij przycisk";
-            _isDelayedForTwoSeconds = true;
+            _isDelayedForOneSecond = true;
         }
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -95,7 +95,7 @@ namespace SmartParkAndroid.Fragments
             {
                 case MotionEventActions.Down:
                     _viewPager.SetSwipePagingEnabled(false);
-                    _handler.PostDelayed(_longPressedRunnable, 2000);
+                    _handler.PostDelayed(_longPressedRunnable, 1000);
                     break;
 
                 case MotionEventActions.Up:
@@ -103,11 +103,11 @@ namespace SmartParkAndroid.Fragments
                     _handler.RemoveCallbacks(_longPressedRunnable);
                     button.SetTextColor(Resources.GetColor(Resource.Color.main_blue));
 
-                    if (_isDelayedForTwoSeconds)
+                    if (_isDelayedForOneSecond)
                     {
-                        ReverseTransition(500, _gateButton);
+                        ReverseTransition(350, _gateButton);
                         OnClickOpenGate(button, view);
-                        _isDelayedForTwoSeconds = false;
+                        _isDelayedForOneSecond = false;
                     }
 
                     break;
