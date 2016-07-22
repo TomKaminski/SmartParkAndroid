@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.ComponentModel;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -23,17 +24,18 @@ namespace SmartParkAndroid
     {
         private DrawerLayout _drawerLayout;
         private CustomViewPager _viewPager;
+        private readonly BackgroundWorker _worker = new BackgroundWorker();
+
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-
             SetActivityScreenOrientation(ScreenOrientation.Portrait);
-
             InitUserContext();
 
             SetContentView(Resource.Layout.Main);
+
+            _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
             SetSupportActionBar(FindViewById<SupportToolbar>(Resource.Id.toolBar));
             InitSupportActionBar();
@@ -44,7 +46,7 @@ namespace SmartParkAndroid
                 SetUpDrawerContent(navigationView);
                 if (StaticManager.LoggedIn)
                 {
-                    SetUpNavHeaderLoggedInContent(navigationView, StaticManager.ImageId);
+                    SetUpNavHeaderLoggedInContent(navigationView, StaticManager.ImageBase64);
                 }
                 else
                 {
@@ -86,7 +88,7 @@ namespace SmartParkAndroid
             navHeaderTextView.TextFormatted = sb;
         }
 
-        private void SetUpNavHeaderLoggedInContent(NavigationView view, string imageId)
+        private void SetUpNavHeaderLoggedInContent(NavigationView view, string imageBase64)
         {
             RemoveNavHeaders(view);
             view.InflateHeaderView(Resource.Layout.nav_header_logged);
@@ -96,7 +98,12 @@ namespace SmartParkAndroid
             emailTextView.Text = StaticManager.UserName;
 
             var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
-            circleImgView.SetImageURL($"http://smartparkath.azurewebsites.net/images/user-avatars/{imageId}");
+
+            _worker.DoWork += (o, e) =>
+            {
+                circleImgView.SetImageFromBase64(imageBase64);
+            };
+            _worker.RunWorkerAsync();
         }
 
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
@@ -156,7 +163,7 @@ namespace SmartParkAndroid
             SetUpViewPager(_viewPager, navView);
             MenuItemsProvider.GetLoggedInMenuItems(navView.Menu, Resources.GetStringArray(Resource.Array.logged_in_menu_string));
             SetSideMenuItemChecked(navView, 0);
-            SetUpNavHeaderLoggedInContent(navView, StaticManager.ImageId);
+            SetUpNavHeaderLoggedInContent(navView, StaticManager.ImageBase64);
 
         }
 
@@ -181,7 +188,7 @@ namespace SmartParkAndroid
             prefEditor.Remove("username");
             prefEditor.Remove("userhash");
             prefEditor.Remove("charges");
-            prefEditor.Remove("imageid");
+            prefEditor.Remove("imagebase64");
 
             prefEditor.Commit();
         }
@@ -210,7 +217,7 @@ namespace SmartParkAndroid
             var username = preferences.GetString("username", null);
             var userHash = preferences.GetString("userhash", null);
             var userCharges = preferences.GetInt("charges", 0);
-            var imageId = preferences.GetString("imageid", "avatar-placeholder.jpg");
+            var imageId = preferences.GetString("imagebase64", "avatar-placeholder.jpg");
 
             StaticManager.InitBase(username != null && userHash != null, username, userHash, userCharges, imageId);
         }

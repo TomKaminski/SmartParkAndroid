@@ -231,6 +231,14 @@ namespace SmartParkAndroid.Core
             initializeBitmap();
         }
 
+        public void SetImageFromBase64(string base64string)
+        {
+            var decodedString = Base64.Decode(base64string, Base64Flags.Default);
+            var decodedByte = BitmapFactory.DecodeByteArray(decodedString, 0, decodedString.Length);
+            base.SetImageBitmap(decodedByte);
+            initializeBitmap();
+        }
+
         public override void SetImageBitmap(Bitmap bm)
         {
             base.SetImageBitmap(bm);

@@ -1,7 +1,5 @@
 using System;
 using System.Linq;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
 using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -100,12 +98,12 @@ namespace SmartParkAndroid.Fragments
                 var editor = prefs.Edit();
                 editor.PutString("username", result.Email);
                 editor.PutString("userhash", result.PasswordHash);
-                editor.PutString("imageid", result.ImageId);
+                editor.PutString("imagebase64", result.ImageBase64);
                 editor.PutInt("charges", result.Charges);
 
                 editor.Commit();
 
-                StaticManager.InitBase(true, result.Email, result.PasswordHash, result.Charges, result.ImageId);
+                StaticManager.InitBase(true, result.Email, result.PasswordHash, result.Charges, result.ImageBase64);
 
                 mainActiviy.LogIn();
             }
