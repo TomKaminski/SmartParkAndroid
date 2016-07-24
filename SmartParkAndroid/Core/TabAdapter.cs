@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Android.Support.V4.App;
 using Java.Lang;
+using SmartParkAndroid.Fragments;
 using SupportFragment = Android.Support.V4.App.Fragment;
 using SupportFragmentManager = Android.Support.V4.App.FragmentManager;
 
@@ -8,16 +9,16 @@ namespace SmartParkAndroid.Core
 {
     public class TabAdapter : FragmentStatePagerAdapter
     {
-        public List<SupportFragment> Fragments { get; set; }
+        public List<BaseFragment> Fragments { get; set; }
         public List<string> FragmentNames { get; set; }
 
         public TabAdapter(SupportFragmentManager sfm) : base(sfm)
         {
-            Fragments = new List<SupportFragment>();
+            Fragments = new List<BaseFragment>();
             FragmentNames = new List<string>();
         }
 
-        public void AddFragment(SupportFragment fragment, string name)
+        public void AddFragment(BaseFragment fragment, string name)
         {
             Fragments.Add(fragment);
             FragmentNames.Add(name);

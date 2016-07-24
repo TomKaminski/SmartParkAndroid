@@ -10,11 +10,10 @@ using Android.Widget;
 using Java.Lang;
 using SmartParkAndroid.Core;
 using SmartParkAndroid.Core.Helpers;
-using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
 {
-    public class LoggedInFragment : SupportFragment
+    public class LoggedInFragment : BaseFragment
     {
         static bool _isDelayedForOneSecond;
 
@@ -67,6 +66,10 @@ namespace SmartParkAndroid.Fragments
             };
 
             return view;
+        }
+
+        public override void OnInit()
+        {
         }
 
         private static void StartTransition(int millis, View v)

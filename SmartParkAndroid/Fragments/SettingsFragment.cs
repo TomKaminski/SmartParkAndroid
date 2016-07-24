@@ -6,11 +6,10 @@ using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
-using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
 {
-    public class SettingsFragment : SupportFragment
+    public class SettingsFragment : BaseFragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -22,7 +21,6 @@ namespace SmartParkAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.settings_fragment, container, false);
-
 
             var sb = new SpannableStringBuilder(Resources.GetString(Resource.String.settings_desc_first));
             var boldSpan = new StyleSpan(TypefaceStyle.Bold);
@@ -39,6 +37,10 @@ namespace SmartParkAndroid.Fragments
             settingsBtn.Click += SettingsBtn_Click;
 
             return view;
+        }
+
+        public override void OnInit()
+        {
         }
 
         private void SettingsBtn_Click(object sender, System.EventArgs e)

@@ -2,7 +2,7 @@ using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
-using UK.CO.Chrisjenx.Calligraphy;
+using Calligraphy;
 
 namespace SmartParkAndroid
 {

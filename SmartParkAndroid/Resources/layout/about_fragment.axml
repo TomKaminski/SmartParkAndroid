@@ -2,57 +2,61 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:minWidth="25px"
-    android:background="@color/window_background_dark"
-    android:minHeight="25px">
-    <ImageView
-        android:id="@+id/img_logo_about"
+    android:orientation="vertical"
+    android:background="@color/window_background_dark">
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_white"
-        android:gravity="center"
-        android:layout_gravity="top"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="5dp" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
-        <TextView
-            android:text="@string/about_header"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/about_header_textview"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="#FFFFFFFF"
-            android:textStyle="bold"
-            android:gravity="center"
-            fontPath="fonts/titil_bold.ttf" />
-        <TextView
-            android:text="@string/about_desc_first"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/about_desc_textview_first"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="#FFFFFFFF"
-            android:gravity="center" />
-        <TextView
-            android:text="@string/about_desc_second"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/about_desc_textview_second"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="#FFFFFFFF"
-            android:gravity="center" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_gravity="top"
+            android:paddingBottom="75dp">
+            <ImageView
+                android:id="@+id/img_logo_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo_white"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:paddingBottom="25dp"
+                android:paddingTop="25dp"/>
+            <TextView
+                android:text="@string/about_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_header_textview"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#FFFFFFFF"
+                android:textStyle="bold"
+                android:gravity="center"
+                fontPath="fonts/titil_bold.ttf" />
+            <TextView
+                android:text="@string/about_desc_first"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_desc_textview_first"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#FFFFFFFF"
+                android:gravity="center" />
+            <TextView
+                android:text="@string/about_desc_second"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_desc_textview_second"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#FFFFFFFF"
+                android:gravity="center" />
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

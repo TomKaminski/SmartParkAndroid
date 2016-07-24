@@ -1,11 +1,10 @@
 using Android.OS;
 using Android.Views;
-using SupportFragment = Android.Support.V4.App.Fragment;
 
 
 namespace SmartParkAndroid.Fragments
 {
-    public class AboutFragment : SupportFragment
+    public class AboutFragment : BaseFragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -17,8 +16,11 @@ namespace SmartParkAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.about_fragment, container, false);
-
             return view;
+        }
+
+        public override void OnInit()
+        {
         }
     }
 }

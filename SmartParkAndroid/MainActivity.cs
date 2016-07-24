@@ -1,9 +1,7 @@
-﻿using System.ComponentModel;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.Net;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.View;
@@ -16,15 +14,16 @@ using SmartParkAndroid.Core;
 using SmartParkAndroid.Fragments;
 using SupportToolbar = Android.Support.V7.Widget.Toolbar;
 using SupportActionBar = Android.Support.V7.App.ActionBar;
+using Uri = Android.Net.Uri;
 
 namespace SmartParkAndroid
 {
-    [Activity(Label = "SmartParkAndroid", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/SmartParkTheme")]
+    [Activity(Label = "SmartPark", MainLauncher = true, Icon = "@drawable/icon", Theme = "@style/SmartParkTheme")]
     public class MainActivity : BaseActivity
     {
         private DrawerLayout _drawerLayout;
         private CustomViewPager _viewPager;
-        private readonly BackgroundWorker _worker = new BackgroundWorker();
+        private TabAdapter _tabAdapter;
 
 
         protected override void OnCreate(Bundle bundle)
@@ -34,7 +33,6 @@ namespace SmartParkAndroid
             InitUserContext();
 
             SetContentView(Resource.Layout.Main);
-
             _drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
             SetSupportActionBar(FindViewById<SupportToolbar>(Resource.Id.toolBar));
@@ -61,6 +59,14 @@ namespace SmartParkAndroid
             var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 
             fab.Click += OnClickNavHeaderBtn;
+
+            _drawerLayout.DrawerOpened += _drawerLayout_DrawerOpened;
+        }
+
+
+        private void _drawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)
+        {
+            HideSoftKeyboard();
         }
 
         private void InitSupportActionBar()
@@ -86,6 +92,8 @@ namespace SmartParkAndroid
             var navHeaderTextView = navHeaderView.FindViewById<TextView>(Resource.Id.nav_header_text_view);
 
             navHeaderTextView.TextFormatted = sb;
+
+            navHeaderView.FindViewById<Button>(Resource.Id.header_register_btn).Click += OnClickNavHeaderBtn;
         }
 
         private void SetUpNavHeaderLoggedInContent(NavigationView view, string imageBase64)
@@ -99,11 +107,7 @@ namespace SmartParkAndroid
 
             var circleImgView = navHeaderView.FindViewById<CircularImageView>(Resource.Id.circle_photo_image);
 
-            _worker.DoWork += (o, e) =>
-            {
-                circleImgView.SetImageFromBase64(imageBase64);
-            };
-            _worker.RunWorkerAsync();
+            circleImgView.SetImageFromBase64(imageBase64);
         }
 
         private void OnClickNavHeaderBtn(object sender, System.EventArgs e)
@@ -117,32 +121,27 @@ namespace SmartParkAndroid
 
         private void SetUpViewPager(CustomViewPager viewPager, NavigationView navView)
         {
-            var tabAdapter = new TabAdapter(SupportFragmentManager);
+            _tabAdapter = new TabAdapter(SupportFragmentManager);
             if (StaticManager.LoggedIn)
             {
-                tabAdapter.AddFragment(new LoggedInFragment(), "Logged In Fragment");
-                tabAdapter.AddFragment(new SettingsFragment(), "Settings Fragment");
-                tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
-
-                viewPager.Adapter = tabAdapter;
-                viewPager.PageSelected += (sender, ev) =>
-                {
-                    OnViewPagerPageSelected(navView, ev);
-                };
+                _tabAdapter.AddFragment(new LoggedInFragment(), "Logged In Fragment");
+                _tabAdapter.AddFragment(new SettingsFragment(), "Settings Fragment");
+                _tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
             }
             else
             {
-                tabAdapter.AddFragment(new LoginFragment(), "Login Fragment");
-                tabAdapter.AddFragment(new RecoverPasswordFragment(), "Recover Password Fragment");
-                tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
-
-                viewPager.Adapter = tabAdapter;
-                viewPager.PageSelected += (sender, ev) =>
-                {
-                    OnViewPagerPageSelected(navView, ev);
-                };
+                _tabAdapter.AddFragment(new LoginFragment(), "Login Fragment");
+                _tabAdapter.AddFragment(new RecoverPasswordFragment(), "Recover Password Fragment");
+                _tabAdapter.AddFragment(new AboutFragment(), "About Fragment");
             }
-
+            viewPager.Adapter = _tabAdapter;
+            viewPager.PageSelected += (sender, ev) =>
+            {
+                HideSoftKeyboard();
+                OnViewPagerPageSelected(navView, ev);
+                var baseFragment = _tabAdapter.GetItem(ev.Position) as BaseFragment;
+                baseFragment?.OnInit();
+            };
         }
 
         private void OnViewPagerPageSelected(NavigationView navView, ViewPager.PageSelectedEventArgs ev)
@@ -204,6 +203,7 @@ namespace SmartParkAndroid
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
+                    HideSoftKeyboard();
                     _drawerLayout.OpenDrawer((int)GravityFlags.Left);
                     return true;
                 default:
@@ -274,8 +274,13 @@ namespace SmartParkAndroid
                     ? Resources.GetStringArray(Resource.Array.logged_in_menu_string)
                     : Resources.GetStringArray(Resource.Array.not_logged_in_menu_string);
 
+                HideSoftKeyboard();
                 SetSupportActionBarTitle(menuItemList[drawerPositon]);
                 _viewPager.SetCurrentItem(drawerPositon, false);
+
+                var baseFragment = _tabAdapter.GetItem(drawerPositon) as BaseFragment;
+                baseFragment?.OnInit();
+
                 _drawerLayout.CloseDrawers();
             };
         }
@@ -291,5 +296,7 @@ namespace SmartParkAndroid
 
         }
     }
+
+
 }
 

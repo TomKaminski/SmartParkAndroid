@@ -12,7 +12,7 @@ using SupportFragment = Android.Support.V4.App.Fragment;
 
 namespace SmartParkAndroid.Fragments
 {
-    public class RecoverPasswordFragment : SupportFragment
+    public class RecoverPasswordFragment : BaseFragment
     {
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -24,10 +24,15 @@ namespace SmartParkAndroid.Fragments
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View view = inflater.Inflate(Resource.Layout.recover_password_fragment, container, false);
+
             var btnRecover = view.FindViewById<Button>(Resource.Id.btn_recover_password);
 
             var emailInput = view.FindViewById<TextInputLayout>(Resource.Id.input_recovery_password);
             emailInput.EditText.AfterTextChanged += (sender, e) => EmailInput_AfterTextChanged(sender, e, emailInput);
+            emailInput.FocusChange += EditTextFocusChange;
+
+            var currentLinearLayout = view.FindViewById<LinearLayout>(Resource.Id.fragment_current_linear_layout);
+            currentLinearLayout.Click += CurrentLinearLayout_Click;
 
 
             btnRecover.Click += async (o, e) =>
@@ -38,6 +43,8 @@ namespace SmartParkAndroid.Fragments
 
                     Activity.RunOnUiThread(() =>
                     {
+                        (Activity as MainActivity).HideSoftKeyboard();
+
                         (Activity as MainActivity).ShowProgressBar();
                     });
                     var txtEmail = emailInput.EditText.Text;
@@ -79,6 +86,32 @@ namespace SmartParkAndroid.Fragments
             };
 
             return view;
+        }
+
+        public override void OnInit()
+        {
+            var emailInput = View.FindViewById<TextInputLayout>(Resource.Id.input_recovery_password);
+            if (string.IsNullOrEmpty(emailInput.EditText.Text))
+            {
+                InputErrorHelper.SetError(string.Empty, emailInput);
+            }
+            else
+            {
+                InputErrorHelper.EmailValidateFunc(emailInput);
+            }
+        }
+
+        private void CurrentLinearLayout_Click(object sender, EventArgs e)
+        {
+            (Activity as MainActivity).HideSoftKeyboard();
+        }
+
+        private void EditTextFocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                (Activity as BaseActivity).HideSoftKeyboard();
+            }
         }
 
         private void EmailInput_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e, TextInputLayout wrapper)
